@@ -1,0 +1,128 @@
+[
+ {
+  "text": "ប៉ាស្ទ័រខ្លួនឯងគឺមិនមានការភ័យខ្លាចឡើយ។",
+  "lang": "km",
+  "mode": "styled",
+  "style": "whisper",
+  "voice": "clean:soklin-woman",
+  "duration": 2.559999942779541,
+  "file": "v01.flac"
+ },
+ {
+  "text": "លោកគឺជាមេដឹកនាំយោធានិងនយោបាយរបស់បារាំង។",
+  "lang": "km",
+  "mode": "styled",
+  "style": "excited",
+  "voice": "clean:setha-man",
+  "duration": 2.559999942779541,
+  "file": "v02.flac"
+ },
+ {
+  "text": "ចុះ ខ្ញុំ Copy Storage ផ្ញើទៅក្នុង Group ហើយ។",
+  "lang": "mixed",
+  "mode": "styled",
+  "style": "calm",
+  "voice": "clean:sophon-man",
+  "duration": 2.559999942779541,
+  "file": "v03.flac"
+ },
+ {
+  "text": "តើរដ្ឋាភិបាលខ្មែរលោកជ្រាបទេ។",
+  "lang": "km",
+  "mode": "styled",
+  "style": "whisper",
+  "voice": "clean:chanda-man",
+  "duration": 2.559999942779541,
+  "file": "v04.flac"
+ },
+ {
+  "text": "ចុះ ក្រុមហ៊ុនកំពុងរក Developer ដែលចេះ Flutter។",
+  "lang": "mixed",
+  "mode": "styled",
+  "style": "soft",
+  "voice": "clean:mey-woman",
+  "duration": 2.559999942779541,
+  "file": "v05.flac"
+ },
+ {
+  "text": "កោះរ៉ុងត្រូវបានប្រកាសឈប់នៅលើផ្លូវលំចេក។",
+  "lang": "km",
+  "mode": "styled",
+  "style": "excited",
+  "voice": "clean:oudom-man",
+  "duration": 2.559999942779541,
+  "file": "v06.flac"
+ },
+ {
+  "text": "ចុះ ចូលទៅ Battery រួចចុចលើ Charger។",
+  "lang": "mixed",
+  "mode": "styled",
+  "style": "soft",
+  "voice": "clean:maly-woman",
+  "duration": 2.559999942779541,
+  "file": "v07.flac"
+ },
+ {
+  "text": "ពន្ធនាំចូលគ្របដណ្តប់លើទំនិញជាច្រើនប្រភេទ។",
+  "lang": "km",
+  "mode": "styled",
+  "style": "serious",
+  "voice": "clean:phanin-woman",
+  "duration": 2.559999942779541,
+  "file": "v08.flac"
+ },
+ {
+  "text": "ពួកគេមិនបាច់ Book Room ទេ។",
+  "lang": "mixed",
+  "mode": "styled",
+  "style": "sad",
+  "voice": "clean:aura-man",
+  "duration": 2.559999942779541,
+  "file": "v09.flac"
+ },
+ {
+  "text": "ឈ្មោះខែទីបួនប្រើតាមចន្ទគតិ។",
+  "lang": "km",
+  "mode": "styled",
+  "style": "soft",
+  "voice": "clean:rithy-man",
+  "duration": 2.559999942779541,
+  "file": "v10.flac"
+ },
+ {
+  "text": "អូនសូមផ្ញើ Invoice ឆាប់ឆាប់។",
+  "lang": "mixed",
+  "mode": "styled",
+  "style": "happy",
+  "voice": "clean:neary-woman",
+  "duration": 2.559999942779541,
+  "file": "v11.flac"
+ },
+ {
+  "text": "រាត្រីថ្ងៃនោះខ្ញុំព្រះករុណាសិងមិនលក់ពេញមួយយប់។",
+  "lang": "km",
+  "mode": "styled",
+  "style": "calm",
+  "voice": "clean:seth-man",
+  "duration": 2.559999942779541,
+  "file": "v12.flac"
+ },
+ {
+  "text": "ការប្រមូលវាយនភ័ណ្ឌ LACMA។",
+  "lang": "mixed",
+  "mode": "styled",
+  "style": "soft",
+  "voice": "clean:bora-man",
+  "duration": 2.559999942779541,
+  "file": "v13.flac"
+ },
+ {
+  "text": "មានប្រជាប្រិយភាពខ្លាំងក្លានាសម័យនោះ។",
+  "lang": "km",
+  "mode": "styled",
+  "style": "serious",
+  "voice": "clean:theary-woman",
+  "duration": 2.559999942779541,
+  "file": "v14.flac"
+ }
+]

@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VoxPocket · Khmer text-to-speech</title>
+<meta name="description" content="VoxPocket: a small open Khmer text-to-speech model. Clone a voice from a short clip, add a style, or design a voice. Khmer, Khmer + English, 44.1 kHz. Made by Ing Muyleang.">
+<meta property="og:title" content="VoxPocket · Khmer text-to-speech">
+<meta property="og:description" content="Clone a voice, add a style, or design one. Open Khmer TTS (0.89B), 44.1 kHz.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='30' height='30' aria-hidden='true'><defs><linearGradient id='lg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%238b5cf6'/><stop offset='1' stop-color='%2314b8a6'/></linearGradient></defs><rect width='32' height='32' rx='9' fill='url(%23lg)'/><g stroke='%23fff' stroke-width='2.4' stroke-linecap='round'><path d='M9 13v6'/><path d='M13 9v14'/><path d='M17 12v8'/><path d='M21 7v18'/><path d='M25 13v6'/></g></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --bg2:#f6f8fb; --card:#ffffff; --ink:#0f172a; --ink2:#334155; --muted:#64748b;
+  --line:#e2e8f0; --blue:#7c3aed; --blue2:#a855f7; --green:#1baf7a; --green-bg:#e3f6ee;
+  --shadow:0 1px 2px rgba(15,23,42,.06),0 8px 24px rgba(15,23,42,.06); --radius:16px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b1020; --bg2:#0f1629; --card:#131b31; --ink:#e8edf7; --ink2:#c3cce0; --muted:#8b97b0;
+  --line:#243049; --blue:#a78bfa; --blue2:#c4b5fd; --green:#33c58f; --green-bg:#11352a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --bg:#0b1020; --bg2:#0f1629; --card:#131b31; --ink:#e8edf7; --ink2:#c3cce0; --muted:#8b97b0;
+  --line:#243049; --blue:#a78bfa; --blue2:#c4b5fd; --green:#33c58f; --green-bg:#11352a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,"Kantumruy Pro",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.km{font-family:"Kantumruy Pro",Inter,sans-serif}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em}
+kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:1px 7px;background:var(--card);color:var(--ink)}
+
+/* icons (Lucide + Simple Icons, inline sprite) */
+.ic{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px}
+.ic.ib{fill:currentColor;stroke:none}
+/* glass */
+:root{--glass:rgba(255,255,255,.62);--glass-line:rgba(255,255,255,.7);--glass-shadow:0 8px 32px rgba(15,23,42,.14)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--glass:rgba(19,27,49,.6);--glass-line:rgba(255,255,255,.12);--glass-shadow:0 8px 32px rgba(0,0,0,.45)}}
+:root[data-theme="dark"]{--glass:rgba(19,27,49,.6);--glass-line:rgba(255,255,255,.12);--glass-shadow:0 8px 32px rgba(0,0,0,.45)}
+.glass{background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);border:1px solid var(--glass-line);box-shadow:var(--glass-shadow)}
+/* floating top bar */
+nav:not(#dock){position:sticky;top:10px;z-index:30;padding:0 12px}
+nav .wrap{display:flex;align-items:center;gap:14px;height:58px;max-width:1160px;border-radius:18px;padding:0 10px 0 14px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--ink)}
+.brand img{width:30px;height:30px;border-radius:8px}
+.navlinks{display:flex;gap:2px;margin-left:auto;font-size:14px}
+.navlinks a{color:var(--ink2);display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:11px;white-space:nowrap}
+.navlinks a:hover{text-decoration:none;background:color-mix(in srgb,var(--blue) 10%,transparent);color:var(--ink)}
+.iconbtn{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:11px;border:1px solid var(--glass-line);background:transparent;color:var(--ink);cursor:pointer}
+.iconbtn .ic{width:19px;height:19px}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:10px;padding:11px 18px;font-weight:600;font-size:15px;border:1px solid transparent;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}
+.btn:hover{text-decoration:none;transform:translateY(-1px)}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 6px 18px color-mix(in srgb,var(--blue) 35%,transparent)}
+.btn-ghost{background:var(--card);color:var(--ink);border-color:var(--line)}
+.btn-sm{padding:7px 13px;font-size:14px}
+
+/* hero */
+.hero{padding:72px 0 56px;background:radial-gradient(1100px 420px at 75% -10%,color-mix(in srgb,var(--blue2) 22%,transparent),transparent),var(--bg)}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+.pill{display:inline-flex;gap:8px;align-items:center;background:var(--green-bg);color:var(--green);font-weight:600;font-size:13px;border-radius:999px;padding:5px 12px}
+h1{font-size:clamp(36px,5.4vw,60px);line-height:1.08;margin:16px 0 14px;letter-spacing:-.02em;font-weight:800}
+h1 .km{background:linear-gradient(90deg,var(--blue),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:19px;color:var(--ink2);max-width:540px;margin:0 0 26px}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.trust{display:flex;flex-wrap:wrap;gap:18px;margin-top:22px;color:var(--muted);font-size:14px}
+.trust b{color:var(--ink)}
+
+/* demo */
+.demo{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:22px}
+.demo-top{display:flex;gap:6px;margin-bottom:16px}
+.demo-top i{width:11px;height:11px;border-radius:50%;background:var(--line);display:block}
+.demo-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.typed{font-size:22px;min-height:34px;margin:6px 0 14px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.typed u{text-decoration-thickness:2px;text-underline-offset:5px}
+.caret{display:inline-block;width:2px;height:24px;background:var(--blue);vertical-align:-4px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.cands{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.cand{display:flex;gap:12px;align-items:center;padding:9px 14px;font-size:20px;border-top:1px solid var(--line);transition:background .2s}
+.cand:first-child{border-top:none}
+.cand span{color:var(--muted);font-size:13px;width:12px;font-family:Inter,sans-serif}
+.cand.sel{background:var(--green-bg);box-shadow:inset 3px 0 0 var(--green)}
+.out{margin-top:16px;padding:12px 14px;border-radius:12px;background:var(--bg2);font-size:22px;min-height:52px}
+.hint{font-size:13px;color:var(--muted);margin-top:10px}
+
+/* sections */
+section{padding:76px 0}
+section.alt{background:var(--bg2)}
+.eyebrow{color:var(--blue);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+h2{font-size:clamp(28px,3.6vw,40px);line-height:1.15;margin:8px 0 12px;letter-spacing:-.015em}
+.sub{color:var(--ink2);font-size:18px;max-width:680px;margin:0 0 36px}
+.grid{display:grid;gap:18px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+.card h3{margin:10px 0 6px;font-size:19px}
+.card p{margin:0 0 14px;color:var(--ink2);font-size:15px}
+.icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--blue) 12%,transparent);color:var(--blue)}
+.icon svg{width:24px;height:24px}
+.icon .ic{width:24px;height:24px}
+.status{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px}
+.st-ok{background:var(--green-bg);color:var(--green)}
+.st-test{background:color-mix(in srgb,#f59e0b 16%,transparent);color:#b45309}
+.st-soon{background:color-mix(in srgb,var(--muted) 16%,transparent);color:var(--muted)}
+:root[data-theme="dark"] .st-test{color:#fbbf24}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .st-test{color:#fbbf24}}
+.platform{display:flex;flex-direction:column}
+.platform .actions{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.meta{font-size:13px;color:var(--muted)}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:8px}
+.stat{text-align:center;padding:22px 10px}
+.stat b{display:block;font-size:38px;line-height:1.1;letter-spacing:-.02em;color:var(--ink)}
+.stat span{color:var(--muted);font-size:14px}
+
+.steps{counter-reset:s}
+.step{position:relative;padding-left:56px}
+.step::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:18px;width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;display:grid;place-items:center}
+.figure{border-radius:14px;border:1px solid var(--line);background:#fff;width:100%;display:block}
+
+table.ex{width:100%;border-collapse:collapse;font-size:16px}
+table.ex td{padding:10px 12px;border-top:1px solid var(--line)}
+table.ex td:first-child{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--ink2);width:46%}
+table.ex td:last-child{font-size:19px}
+
+/* support */
+.support{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:stretch}
+.goal{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
+.goal:first-of-type{border-top:none}
+.goal b{display:block}
+.goal small{color:var(--muted)}
+.price{font-weight:800;font-size:20px;white-space:nowrap}
+.bank{background:linear-gradient(135deg,#0d3b66,#145a8d);color:#fff;border-radius:18px;padding:26px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+.bank .label{opacity:.8;font-size:13px;text-transform:uppercase;letter-spacing:.08em}
+.acct{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:30px;letter-spacing:.06em;font-weight:700}
+.copy{align-self:flex-start;background:#ffffff22;color:#fff;border:1px solid #ffffff44}
+.bank small{opacity:.85}
+
+/* anchors land below the sticky bar */
+section,header{scroll-margin-top:70px}
+/* phone menu */
+#menuBtn{display:none}
+/* phone: floating glass dock at the bottom + a glass sheet with every link */
+#dock{display:none}
+#mobileMenu{display:none;position:fixed;left:12px;right:12px;bottom:92px;z-index:40;border-radius:22px;padding:8px;max-height:70vh;overflow:auto}
+#mobileMenu.open{display:block;animation:up .18s ease-out}
+@keyframes up{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+#mobileMenu .grp{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:10px 12px 4px}
+#mobileMenu a{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;color:var(--ink);font-weight:600;font-size:16px}
+#mobileMenu a:hover,#mobileMenu a:active{text-decoration:none;background:color-mix(in srgb,var(--blue) 10%,transparent)}
+#mobileMenu a .ic{width:20px;height:20px;color:var(--blue)}
+#mobileMenu a small{margin-left:auto;color:var(--muted);font-weight:500;font-size:12px}
+.navlinks a.active{color:var(--blue);font-weight:600;background:color-mix(in srgb,var(--blue) 12%,transparent)}
+/* figures: tap to see them big */
+.zoom{cursor:zoom-in;position:relative;display:block}
+.zoom::after{content:"⤢ Tap to zoom";position:absolute;right:10px;bottom:10px;font-size:12px;font-weight:600;background:rgba(15,23,42,.72);color:#fff;border-radius:999px;padding:4px 10px;pointer-events:none}
+#lightbox{display:none;position:fixed;inset:0;z-index:50;background:rgba(5,8,18,.92);overflow:auto;-webkit-overflow-scrolling:touch}
+#lightbox.open{display:block}
+#lightbox img{display:block;background:#fff;max-width:none;width:max(100%,1100px);margin:56px auto 24px;border-radius:8px}
+#lightbox button{position:fixed;top:12px;right:12px;z-index:51;background:#fff;color:#0f172a;border:none;border-radius:999px;width:40px;height:40px;font-size:20px;cursor:pointer}
+#lightbox .hint{position:fixed;top:20px;left:16px;color:#cbd5e1;font-size:13px}
+/* back to top */
+#toTop{position:fixed;right:16px;bottom:20px;z-index:25;width:46px;height:46px;border-radius:50%;color:var(--ink);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s;display:grid;place-items:center}
+#toTop.show{opacity:1;pointer-events:auto}
+footer{padding:40px 0;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}
+
+/* grid/flex children may shrink below their content width (no sideways scroll on phones) */
+.hero .wrap>*,.grid>*,.support>*,.g2>*{min-width:0}
+.lead code{white-space:normal}
+.cand,.out{overflow-wrap:anywhere}
+@media (max-width:1100px){ .navlinks .lbl-x{display:none} }
+@media (max-width:900px){
+  .hero .wrap,.support{grid-template-columns:1fr}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3,.stats{grid-template-columns:repeat(2,1fr)}
+  .navlinks{display:none}
+  #theme{margin-left:auto}
+  nav .wrap{height:54px}
+  #dock{display:flex;position:fixed;top:auto;height:auto;left:50%;transform:translateX(-50%);bottom:max(12px,env(safe-area-inset-bottom));z-index:40;
+        width:min(440px,calc(100% - 24px));border-radius:22px;padding:6px;justify-content:space-between}
+  #dock a,#dock button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 2px;border-radius:15px;
+        color:var(--ink2);font:600 11px/1.1 Inter,sans-serif;background:none;border:none;cursor:pointer;text-decoration:none}
+  #dock .ic{width:22px;height:22px}
+  #dock a.active,#dock button.on{color:var(--blue);background:color-mix(in srgb,var(--blue) 13%,transparent)}
+  #toTop{bottom:96px}
+  body{padding-bottom:96px}
+}
+@media (max-width:560px){
+  .g4,.g3,.g2{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr);gap:4px}
+  .stat{padding:14px 4px}
+  .stat b{font-size:28px}
+  .hero{padding:36px 0 32px}
+  h1{margin-top:12px}
+  .lead{font-size:17px}
+  section{padding:48px 0}
+  .sub{font-size:16px;margin-bottom:24px}
+  .card{padding:18px}
+  .step{padding-left:18px}
+  .step::before{position:static;display:inline-grid;margin-bottom:4px;width:32px;height:32px}
+  table.ex td{padding:9px 6px}
+  table.ex td:first-child{width:44%;font-size:13px}
+  table.ex td:last-child{font-size:17px}
+  .acct{font-size:24px}
+  .cta{flex-wrap:nowrap;gap:10px}
+  .cta .btn{flex:1;justify-content:center;white-space:nowrap;padding:12px 10px;font-size:15px}
+  footer .wrap{flex-direction:column}
+}
+
+/* ---- VoxPocket extras ---- */
+.voices{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.voice{display:flex;flex-direction:column;gap:8px;padding:16px}
+.vhead{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;background:color-mix(in srgb,var(--blue) 14%,transparent);color:var(--blue)}
+.chip.ghost{background:color-mix(in srgb,var(--muted) 14%,transparent);color:var(--muted)}
+.vtext{font-size:17px;margin:2px 0;color:var(--ink);min-height:52px}
+audio{width:100%;height:36px}
+@media (max-width:560px){
+  .voices{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 -20px;padding:2px 20px 10px;-webkit-overflow-scrolling:touch}
+  .voice{flex:0 0 84%;scroll-snap-align:center}
+  .vtext{min-height:0}
+}
+.swipe{display:none;color:var(--muted);font-size:13px;margin:-14px 0 14px}
+@media (max-width:560px){.swipe{display:block}}
+.player{display:flex;flex-direction:column;gap:12px}
+.pitem{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--bg2)}
+.pitem .lab{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;margin-bottom:6px}
+.pitem .km{font-size:17px;margin:0 0 8px}
+pre.code{background:#0b1020;color:#e2e8f0;border-radius:14px;padding:16px 18px;overflow:auto;font-size:13.5px;line-height:1.55;margin:0;border:1px solid var(--line)}
+pre.code .c{color:#94a3b8} pre.code .s{color:#86efac} pre.code .k{color:#c4b5fd}
+.warn{display:flex;gap:14px;align-items:flex-start;border:1px solid color-mix(in srgb,#ef4444 40%,transparent);background:color-mix(in srgb,#ef4444 8%,transparent);border-radius:16px;padding:18px 20px}
+.warn .ic{width:26px;height:26px;color:#ef4444}
+.cite{position:relative}
+.cite button{position:absolute;top:10px;right:10px}
+table.res{width:100%;border-collapse:collapse;font-size:15px}
+table.res th,table.res td{padding:10px 12px;border-top:1px solid var(--line);text-align:left}
+table.res th{color:var(--muted);font-weight:600;font-size:13px;border-top:none}
+table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb,var(--blue) 8%,transparent)}
+.brand svg{border-radius:8px}
+/* try it */
+#try .tbox{max-width:760px;display:grid;gap:16px}
+.trow{display:grid;gap:8px}
+.tlabel{font-size:13px;font-weight:700;color:var(--muted)}
+.tchips{display:flex;flex-wrap:wrap;gap:6px}
+.tchip{font:inherit;font-size:14px;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink2);border-radius:999px;padding:7px 14px;cursor:pointer}
+.tchip.km{font-family:"Kantumruy Pro",Inter,sans-serif;font-weight:500;font-size:16px}
+.tchip.on{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 14%,transparent);color:var(--blue)}
+.tsmall{font-size:13px;color:var(--muted);margin:0}
+#try textarea,#try input[type=text]{width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;outline:none}
+#try textarea{min-height:110px;resize:vertical;font-family:"Kantumruy Pro",Inter,sans-serif}
+#try textarea:focus,#try input[type=text]:focus{border-color:var(--blue)}
+#try-latin{font-family:ui-monospace,SFMono-Regular,Menlo,monospace!important;font-size:15px!important}
+.tsing{display:grid;gap:8px;padding:12px;border:1px dashed var(--line);border-radius:12px}
+.tmuted{color:var(--muted);font-size:14px}
+.town{display:grid;gap:8px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--bg2)}
+.town label{display:flex;gap:8px;align-items:flex-start;font-size:14px;color:var(--ink2)}
+.tgo{justify-content:center;width:100%;font-size:17px;padding:14px}
+.tgo{position:relative;overflow:hidden}
+.tgo:disabled{cursor:wait;transform:none}
+.tspin{display:none;width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:tspin .8s linear infinite}
+.tgo.loading .tspin{display:inline-block}
+.tgo.loading .tgo-ic{display:none}
+.tgo.loading::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:40%;background:rgba(255,255,255,.75);border-radius:3px;animation:tbar 1.2s ease-in-out infinite}
+@keyframes tspin{to{transform:rotate(360deg)}}
+@keyframes tbar{0%{left:-40%}100%{left:100%}}
+@media (prefers-reduced-motion:reduce){.tspin,.tgo.loading::after{animation-duration:3s}}
+#try-voice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#try-voice .tchip{text-align:center;padding:10px 14px}
+@media (min-width:720px){.tclips{grid-template-columns:1fr 1fr}}
+.tnote{min-height:1.4em;margin:0;font-size:14px;color:var(--ink2)}
+.tnote.bad{color:#d14343}
+#try audio{width:100%}
+.tclips{display:grid;gap:12px}
+.tread{margin:0;padding:12px;border-radius:12px;background:color-mix(in srgb,var(--blue) 10%,transparent);font-size:18px;color:var(--ink)}
+.tchip.rec{border-color:#d14343;background:#d14343;color:#fff}
+.tclip{display:grid;gap:8px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--bg2)}
+.tclip-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tclip-text{margin:0;font-size:16px;color:var(--ink)}
+.tplayer{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.tplay{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:0;background:color-mix(in srgb,var(--ink) 9%,var(--card));color:var(--ink);box-shadow:0 1px 3px rgba(15,23,42,.18),0 4px 10px rgba(15,23,42,.08);cursor:pointer}
+.tplay svg{width:18px;height:18px}
+.twave{flex:1;min-width:0;height:40px;display:flex;align-items:center;justify-content:space-between;gap:2px;cursor:pointer}
+.twave i{flex:0 1 4px;min-width:2px;height:30%;border-radius:2px;background:color-mix(in srgb,var(--muted) 45%,transparent);transition:background .15s}
+.twave i.on{background:var(--blue)}
+.ttime{flex:none;font:13px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);min-width:34px;text-align:right}
+.tdlicon{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;color:var(--ink2)}
+.tdlicon:hover{background:color-mix(in srgb,var(--blue) 12%,transparent);color:var(--blue);text-decoration:none}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- icons: Lucide (ISC) and Simple Icons (CC0), the same sets react-icons uses -->
+<symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7" /> <path d="M12 19V5" /></symbol>
+<symbol id="i-audio-lines" viewBox="0 0 24 24"><path d="M2 10v3" /> <path d="M6 6v11" /> <path d="M10 3v18" /> <path d="M14 8v7" /> <path d="M18 5v13" /> <path d="M22 10v3" /></symbol>
+<symbol id="i-book-open" viewBox="0 0 24 24"><path d="M12 7v14" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>
+<symbol id="i-cpu" viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2" /> <rect width="6" height="6" x="9" y="9" rx="1" /> <path d="M15 2v2" /> <path d="M15 20v2" /> <path d="M2 15h2" /> <path d="M2 9h2" /> <path d="M20 15h2" /> <path d="M20 9h2" /> <path d="M9 2v2" /> <path d="M9 20v2" /></symbol>
+<symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3" /> <path d="M3 5V19A9 3 0 0 0 21 19V5" /> <path d="M3 12A9 3 0 0 0 21 12" /></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /> <polyline points="7 10 12 15 17 10" /> <line x1="12" x2="12" y1="15" y2="3" /></symbol>
+<symbol id="i-ellipsis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1" /> <circle cx="19" cy="12" r="1" /> <circle cx="5" cy="12" r="1" /></symbol>
+<symbol id="i-external-link" viewBox="0 0 24 24"><path d="M15 3h6v6" /> <path d="M10 14 21 3" /> <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></symbol>
+<symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4" /> <path d="M3.34 19a10 10 0 1 1 17.32 0" /></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></symbol>
+<symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /> <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></symbol>
+<symbol id="i-keyboard" viewBox="0 0 24 24"><path d="M10 8h.01" /> <path d="M12 12h.01" /> <path d="M14 8h.01" /> <path d="M16 12h.01" /> <path d="M18 8h.01" /> <path d="M6 8h.01" /> <path d="M7 16h10" /> <path d="M8 12h.01" /> <rect width="20" height="16" x="2" y="4" rx="2" /></symbol>
+<symbol id="i-languages" viewBox="0 0 24 24"><path d="m5 8 6 6" /> <path d="m4 14 6-6 2-3" /> <path d="M2 5h12" /> <path d="M7 2h1" /> <path d="m22 22-5-10-5 10" /> <path d="M14 18h6" /></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" /> <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" /> <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" /></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><line x1="4" x2="20" y1="12" y2="12" /> <line x1="4" x2="20" y1="6" y2="6" /> <line x1="4" x2="20" y1="18" y2="18" /></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /> <path d="M19 10v2a7 7 0 0 1-14 0v-2" /> <line x1="12" x2="12" y1="19" y2="22" /></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2" /> <line x1="8" x2="16" y1="21" y2="21" /> <line x1="12" x2="12" y1="17" y2="21" /></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3" /></symbol>
+<symbol id="i-quote" viewBox="0 0 24 24"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z" /> <path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z" /></symbol>
+<symbol id="i-shield-alert" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /> <path d="M12 8v4" /> <path d="M12 16h.01" /></symbol>
+<symbol id="i-smartphone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /> <path d="M12 18h.01" /></symbol>
+<symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" /> <path d="M20 3v4" /> <path d="M22 5h-4" /> <path d="M4 17v2" /> <path d="M5 18H3" /></symbol>
+<symbol id="i-sun-moon" viewBox="0 0 24 24"><path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4" /> <path d="M12 2v2" /> <path d="M12 20v2" /> <path d="m4.9 4.9 1.4 1.4" /> <path d="m17.7 17.7 1.4 1.4" /> <path d="M2 12h2" /> <path d="M20 12h2" /> <path d="m6.3 17.7-1.4 1.4" /> <path d="m19.1 4.9-1.4 1.4" /></symbol>
+<symbol id="i-volume-2" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /> <path d="M16 9a5 5 0 0 1 0 6" /> <path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol>
+<symbol id="i-wand-sparkles" viewBox="0 0 24 24"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72" /> <path d="m14 7 3 3" /> <path d="M5 6v4" /> <path d="M19 14v4" /> <path d="M10 2v2" /> <path d="M7 8H3" /> <path d="M21 16h-4" /> <path d="M11 3H9" /></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /> <path d="m6 6 12 12" /></symbol>
+<symbol id="b-android" viewBox="0 0 24 24"><path d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"/></symbol>
+<symbol id="b-apple" viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></symbol>
+<symbol id="b-github" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol>
+<symbol id="b-huggingface" viewBox="0 0 24 24"><path d="M1.4446 11.5059c0 1.1021.1673 2.1585.4847 3.1563-.0378-.0028-.0691-.0058-.1058-.0058-.4209 0-.8015.16-1.0704.4512-.3454.3737-.4984.8335-.4316 1.293a1.576 1.576 0 0 0 .2148.5978c-.2319.1864-.4018.4456-.4844.7578-.0646.2448-.131.7543.2149 1.2794a1.4552 1.4552 0 0 0-.0625.1055c-.208.3923-.2207.8372-.0371 1.25.2783.6258.9696 1.1175 2.3126 1.6467.8356.3292 1.5988.5411 1.6056.543 1.1046.2847 2.104.4277 2.969.4277 1.4173 0 2.4754-.3849 3.1525-1.1446 1.538.2651 2.791.1403 3.592.006.6773.7555 1.7332 1.1387 3.1467 1.1387.8649 0 1.8643-.143 2.969-.4278.0068-.0019.77-.2138 1.6056-.543 1.343-.5292 2.0343-1.0208 2.3126-1.6466.1836-.4129.171-.8577-.037-1.25a1.4685 1.4685 0 0 0-.0626-.1056c.346-.525.2795-1.0346.2149-1.2793-.0826-.3122-.2525-.5714-.4844-.7579.11-.1816.1831-.3788.2148-.5977.0669-.4595-.0862-.9193-.4316-1.293-.2688-.2913-.6495-.4513-1.0704-.4513-.0209 0-.0376.0008-.0588.0018.3162-.9966.4846-2.0518.4846-3.1523 0-5.807-4.7362-10.5144-10.5789-10.5144-5.8426 0-10.5788 4.7073-10.5788 10.5144Zm10.5788-9.4831c5.2727 0 9.5476 4.246 9.5476 9.483a9.4201 9.4201 0 0 1-.2696 2.2365c-.0039-.0047-.0079-.011-.0117-.0156-.274-.3255-.6679-.5059-1.1075-.5059-.352 0-.714.1155-1.0763.3438-.2403.1517-.5058.422-.7793.7598-.2534-.3492-.608-.5832-1.0137-.6465a1.5174 1.5174 0 0 0-.2344-.0176c-.9263 0-1.4828.7993-1.6935 1.5177-.1046.2426-.6065 1.3482-1.3614 2.0978-1.1681 1.1601-1.4458 2.3534-.8396 3.6382-.843.1029-1.5836.0927-2.365-.006.5906-1.212.3626-2.4388-.8426-3.6322-.755-.7496-1.2568-1.8552-1.3614-2.0978-.2107-.7184-.7673-1.5177-1.6935-1.5177-.078 0-.1568.0054-.2344.0176-.4057.0633-.7604.2973-1.0137.6465-.2735-.3379-.539-.6081-.7794-.7598-.3622-.2283-.7243-.3438-1.0762-.3438-.4266 0-.8094.171-1.0821.4786a9.4208 9.4208 0 0 1-.2598-2.1936c0-5.237 4.2749-9.483 9.5475-9.483zM8.6443 7.0036c-.4838.0043-.9503.2667-1.1934.7227-.3536.6633-.1006 1.4873.5645 1.84.351.1862.4883-.5261.836-.6485.3107-.1095.841.399 1.0078.086.3536-.6634.1025-1.4874-.5625-1.84a1.3659 1.3659 0 0 0-.6524-.1602Zm6.8403 0c-.2199-.002-.4426.05-.6504.1602-.665.3526-.9181 1.1766-.5645 1.84.1669.313.6971-.1955 1.0079-.086.3476.1224.4867.8347.838.6485.6649-.3527.916-1.1767.5624-1.84-.243-.456-.7096-.7184-1.1934-.7227Zm-9.7565 1.418a.8768.8768 0 0 0-.877.877c0 .4846.3925.877.877.877a.8768.8768 0 0 0 .877-.877.8768.8768 0 0 0-.877-.877zm12.6434 0c-.4845 0-.879.3925-.879.877 0 .4846.3945.877.879.877a.8768.8768 0 0 0 .877-.877.8768.8768 0 0 0-.877-.877zM8.7927 11.459c-.179-.003-.2793.1107-.2793.416 0 .8097.3874 2.125 1.4279 2.924.207-.7123 1.3453-1.2832 1.5079-1.2012.2315.1167.2191.4417.6074.7266.3884-.285.374-.6098.6056-.7266.1627-.082 1.3009.4889 1.5079 1.2012 1.0404-.799 1.4278-2.1144 1.4278-2.924 0-1.2212-1.583.6402-3.5413.6485-1.4686-.0061-2.7266-1.0558-3.2639-1.0645zM4.312 14.4768c.5792.365 1.6964 2.2751 2.1056 3.0177.1371.2488.371.3536.582.3536.4188 0 .7465-.4138.0391-.9395-1.0636-.791-.6914-2.0846-.1836-2.1642a.4302.4302 0 0 1 .0664-.004c.4616 0 .666.7892.666.7892s.5959 1.4898 1.6213 2.508c.942.9356 1.062 1.703.4961 2.6661-.0164-.004-.0159.0236-.1484.2149-.1853.2673-.4322.4688-.7188.6152-.5062.2269-1.1397.2696-1.7833.2696-1.037 0-2.1017-.1824-2.6975-.336-.0293-.0075-3.6505-.9567-3.1916-1.8224.0771-.1454.2033-.2031.3633-.2031.6463 0 1.823.9551 2.3283.9551.113 0 .196-.0865.2285-.2031.2249-.8045-3.2787-1.0522-2.9846-2.1642.0519-.1967.193-.2757.3907-.2754.854 0 2.7704 1.4923 3.172 1.4923.0307 0 .0525-.0085.0645-.0274.2012-.3227.1096-.5865-1.3087-1.4395-1.4182-.8533-2.4315-1.329-1.8653-1.9416.0651-.0707.1574-.1015.2695-.1015.8611.0002 2.8948 1.84 2.8948 1.84s.5487.5683.8809.5683c.0762 0 .1416-.0315.1855-.1054.2355-.3946-2.1858-2.2183-2.3224-2.971-.0926-.51.0641-.7676.3555-.7676-.0006.008.1701-.0285.4942.1759zm16.2257.5918c-.1366.7526-2.5579 2.5764-2.3224 2.9709.044.074.1092.1055.1855.1055.3321 0 .881-.5684.881-.5684s2.0336-1.8397 2.8947-1.84c.1121 0 .2044.0308.2695.1016.5662.6125-.447 1.0882-1.8653 1.9415-1.4183.853-1.51 1.1168-1.3087 1.4396.012.0188.0337.0273.0644.0273.4016 0 2.3181-1.4923 3.1721-1.4923.1977-.0002.3388.0787.3907.2754.294 1.112-3.2095 1.3597-2.9846 2.1642.0325.1166.1156.2032.2285.2032.5054 0 1.682-.9552 2.3283-.9552.16 0 .2862.0577.3633.2032.459.8656-3.1623 1.8149-3.1916 1.8224-.5958.1535-1.6605.336-2.6975.336-.6351 0-1.261-.0409-1.7638-.2599-.2949-.1472-.5488-.3516-.7383-.625-.0411-.0682-.1026-.1476-.1426-.205-.5726-.9679-.455-1.7371.4903-2.676 1.0254-1.0182 1.6212-2.508 1.6212-2.508s.2044-.7891.666-.7891a.4318.4318 0 0 1 .0665.0039c.5078.0796.88 1.3732-.1836 2.1642-.7074.5257-.3797.9395.039.9395.211 0 .445-.1047.5821-.3535.4092-.7426 1.5264-2.6527 2.1056-3.0178.5588-.3524.99-.1816.8497.5918z"/></symbol>
+</svg>
+
+<nav>
+  <div class="wrap glass">
+    <a class="brand" href="#top"><svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#14b8a6"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lg)"/><g stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M9 13v6"/><path d="M13 9v14"/><path d="M17 12v8"/><path d="M21 7v18"/><path d="M25 13v6"/></g></svg>VoxPocket <span class="km" style="font-weight:600;color:var(--muted);font-size:15px">សំឡេងខ្មែរ</span></a>
+    <div class="navlinks">
+      <a href="#top"><svg class="ic" aria-hidden="true"><use href="#i-house"/></svg><span>Home</span></a>
+      <a href="#listen"><svg class="ic" aria-hidden="true"><use href="#i-volume-2"/></svg><span>Listen</span></a>
+      <a href="#try"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg><span>Try it</span></a>
+      <a href="https://huggingface.co/INGMUYLEANG/VoxPocket-v5" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg><span class="lbl-x">Model</span></a>
+      <a href="#docs"><svg class="ic" aria-hidden="true"><use href="#i-book-open"/></svg><span>Docs</span></a>
+      <a href="#results"><svg class="ic" aria-hidden="true"><use href="#i-gauge"/></svg><span class="lbl-x">Results</span></a>
+      <a href="#dataset"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg><span class="lbl-x">Dataset</span></a>
+      <a href="#open"><svg class="ic ib" aria-hidden="true"><use href="#b-github"/></svg><span>Code</span></a>
+    </div>
+    <button id="theme" class="iconbtn" title="Light / dark" aria-label="Switch light or dark mode"><svg class="ic" aria-hidden="true"><use href="#i-sun-moon"/></svg></button>
+  </div>
+</nav>
+
+<div id="mobileMenu" class="glass" role="menu">
+  <div class="grp">On this page</div>
+  <a href="#top"><svg class="ic" aria-hidden="true"><use href="#i-house"/></svg>Home</a>
+  <a href="#try"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Try it here</a>
+  <a href="#listen"><svg class="ic" aria-hidden="true"><use href="#i-volume-2"/></svg>Listen to the voices</a>
+  <a href="#use"><svg class="ic" aria-hidden="true"><use href="#i-wand-sparkles"/></svg>Three ways to use it</a>
+  <a href="#results"><svg class="ic" aria-hidden="true"><use href="#i-gauge"/></svg>Results</a>
+  <a href="#docs"><svg class="ic" aria-hidden="true"><use href="#i-book-open"/></svg>Docs: how it works</a>
+  <a href="#dataset"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg>Dataset</a>
+  <a href="#open"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg>Open source &amp; code</a>
+  <a href="#cite"><svg class="ic" aria-hidden="true"><use href="#i-quote"/></svg>Citation</a>
+  <div class="grp">Online</div>
+  <a href="https://huggingface.co/spaces/INGMUYLEANG/VoxPocket-v4-demo" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Try the demo<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
+  <a href="https://huggingface.co/INGMUYLEANG/VoxPocket-v5" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg>Model on Hugging Face<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
+  <a href="https://huggingface.co/datasets/INGMUYLEANG/voxpocket-khmer-tts-v4" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg>Dataset (request access)<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
+  <a href="https://github.com/MuyleangIng" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-github"/></svg>GitHub<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
+</div>
+
+<nav id="dock" class="glass" aria-label="Quick links">
+  <a href="#top" data-sec="top"><svg class="ic" aria-hidden="true"><use href="#i-house"/></svg>Home</a>
+  <a href="#try" data-sec="try"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Try it</a>
+  <a href="#listen" data-sec="listen"><svg class="ic" aria-hidden="true"><use href="#i-volume-2"/></svg>Listen</a>
+  <a href="https://huggingface.co/INGMUYLEANG/VoxPocket-v5" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg>Model</a>
+  <button id="menuBtn2" aria-label="More" aria-expanded="false"><svg class="ic" aria-hidden="true"><use href="#i-ellipsis"/></svg>More</button>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <span class="pill">● Open Khmer text-to-speech · v5</span>
+      <h1>Khmer voice,<br>in your <span class="km">pocket</span>.</h1>
+      <p class="lead">VoxPocket reads <b>Khmer</b> and <b>Khmer mixed with English</b> aloud in a natural voice. <b>Clone a voice</b> from a 4–9 second clip, give it a <b>style</b> (happy, sad, whisper…), or <b>design</b> a new voice from a description.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://huggingface.co/spaces/INGMUYLEANG/VoxPocket-v4-demo" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Try the demo</a>
+        <a class="btn btn-ghost" href="https://huggingface.co/INGMUYLEANG/VoxPocket-v5" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg>Model</a>
+      </div>
+      <div class="trust">
+        <span><b>0.89B</b> parameters · <b>44.1 kHz</b> · <b>3.6×</b> real time</span>
+        <span><svg class="ic" aria-hidden="true"><use href="#i-shield-alert"/></svg> Never use it to impersonate real people</span>
+      </div>
+    </div>
+    <div class="demo player" aria-label="Listen">
+      <div class="demo-label">Made with the live demo</div>
+      <div class="pitem"><div class="lab"><svg class="ic" aria-hidden="true"><use href="#i-wand-sparkles"/></svg>Designed voice <span class="chip ghost">"a young woman, clear and bright, cheerful"</span></div>
+        <p class="km">សួស្តីបងប្អូនទាំងអស់គ្នា ថ្ងៃនេះយើងនឹងនិយាយអំពី Akkhara keyboard។</p>
+        <audio controls preload="none" src="assets/audio/demo-design.mp3"></audio></div>
+      <div class="pitem"><div class="lab"><svg class="ic" aria-hidden="true"><use href="#i-mic"/></svg>Cloned voice + style <span class="chip">Happy</span></div>
+        <p class="km">សួស្តីបងប្អូនទាំងអស់គ្នា ថ្ងៃនេះយើងនឹងនិយាយអំពី Akkhara keyboard។</p>
+        <audio controls preload="none" src="assets/audio/demo-clone.mp3"></audio></div>
+      <div class="hint">VoxPocket v5 · cfg 2.0 · 10 steps · about 6–7 s on the free demo</div>
+    </div>
+  </div>
+</header>
+
+<section id="try">
+  <div class="wrap">
+    <div class="eyebrow">Try it</div>
+    <h2>Type it, hear it</h2>
+    <p class="sub">Type Khmer (or Khmer with Latin letters), pick a voice and a mood, and listen. Free to try.</p>
+    <div class="card tbox" id="try-box">
+      <div class="trow">
+        <div class="tlabel">Model</div>
+        <div class="tchips" id="try-engine"></div>
+        <p class="tsmall" id="try-hdnote">Higher quality voice: powered by <a href="https://huggingface.co/INGMUYLEANG/VoxPocket-v5" target="_blank" rel="noopener"> VoxPocket on Hugging Face</a>. Usually ready in a few seconds; when many people use it, requests wait in line.</p>
+      </div>
+      <div class="trow">
+        <div class="tlabel">Text</div>
+        <div class="tchips" id="try-mode"></div>
+        <div class="tsing" id="try-sing" hidden>
+          <input type="text" id="try-latin" placeholder="sok sbay te" autocapitalize="off" autocomplete="off" spellcheck="false" aria-label="Khmer in Latin letters">
+          <div class="tchips" id="try-cands"></div>
+          <p class="tsmall">Tap a result to add it to the text. Sing Khmer by <a href="https://muyleanging.github.io/akkhara-web/" target="_blank" rel="noopener">Akkhara</a> · <a href="https://huggingface.co/INGMUYLEANG/akkhara-mini" target="_blank" rel="noopener">model</a></p>
+        </div>
+        <textarea id="try-text" class="km" maxlength="500" aria-label="Text to read">សួស្តីបងប្អូនទាំងអស់គ្នា អរគុណច្រើនសម្រាប់ការគាំទ្រ។</textarea>
+      </div>
+      <div class="trow">
+        <div class="tlabel">Voice</div>
+        <div class="tchips" id="try-voice"></div>
+        <div class="town" id="try-own" hidden>
+          <div class="tchips">
+            <button type="button" class="tchip" id="try-rec"><svg class="ic" aria-hidden="true"><use href="#i-mic"/></svg> Record</button>
+            <label class="tchip" for="try-file" style="display:inline-flex;align-items:center;gap:6px"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg> Upload a clip</label>
+            <input type="file" id="try-file" accept="audio/*" aria-label="Voice clip" hidden>
+          </div>
+          <p class="km tread" id="try-read" hidden></p>
+          <audio id="try-preview" controls hidden></audio>
+          <input type="text" id="try-words" class="km" placeholder="Exactly the words spoken in the clip" aria-label="Words in the clip">
+          <label><input type="checkbox" id="try-ok"> This is my voice, or I have permission to use it.</label>
+          <p class="tsmall">Use a clean 4–9 s clip of one speaker. Do not copy real people's voices to trick anyone.</p>
+        </div>
+      </div>
+      <div class="trow">
+        <div class="tlabel">Style</div>
+        <div class="tchips" id="try-style"></div>
+      </div>
+      <button class="btn btn-primary tgo" id="try-go" type="button"><span class="tspin" aria-hidden="true"></span><svg class="ic tgo-ic" aria-hidden="true"><use href="#i-play"/></svg><span id="try-go-label">Speak</span></button>
+      <p class="tnote" id="try-note" role="status"></p>
+      <div class="tlabel" id="try-clips-title" hidden>Your clips</div>
+      <div id="try-clips" class="tclips" hidden></div>
+    </div>
+  </div>
+</section>
+
+<section id="listen">
+  <div class="wrap">
+    <div class="eyebrow">Listen</div>
+    <h2>14 voices, many moods</h2>
+    <p class="sub">Clips from the open <a href="https://huggingface.co/datasets/INGMUYLEANG/voxpocket-khmer-tts-preview" target="_blank" rel="noopener">preview dataset</a>: one per voice, with a style. Some mix English words into Khmer, the way people really talk.</p>
+    <div class="swipe">← swipe to hear all 14 voices →</div>
+    <div class="voices">
+      <div class="card voice"><div class="vhead"><span class="chip">Whisper</span><span class="chip ghost">Khmer</span></div>
+      <p class="km vtext">ប៉ាស្ទ័រខ្លួនឯងគឺមិនមានការភ័យខ្លាចឡើយ។</p><audio controls preload="none" src="assets/audio/v01.flac"></audio><div class="meta">soklin · woman</div></div><div class="card voice"><div class="vhead"><span class="chip">Excited</span><span class="chip ghost">Khmer</span></div>
+      <p class="km vtext">លោកគឺជាមេដឹកនាំយោធានិងនយោបាយរបស់បារាំង។</p><audio controls preload="none" src="assets/audio/v02.flac"></audio><div class="meta">setha · man</div></div><div class="card voice"><div class="vhead"><span class="chip">Calm</span><span class="chip ghost">Khmer + English</span></div>
+      <p class="km vtext">ចុះ ខ្ញុំ Copy Storage ផ្ញើទៅក្នុង Group ហើយ។</p><audio controls preload="none" src="assets/audio/v03.flac"></audio><div class="meta">sophon · man</div></div><div class="card voice"><div class="vhead"><span class="chip">Whisper</span><span class="chip ghost">Khmer</span></div>
+      <p class="km vtext">តើរដ្ឋាភិបាលខ្មែរលោកជ្រាបទេ។</p><audio controls preload="none" src="assets/audio/v04.flac"></audio><div class="meta">chanda · man</div></div><div class="card voice"><div class="vhead"><span class="chip">Soft</span><span class="chip ghost">Khmer + English</span></div>
+      <p class="km vtext">ចុះ ក្រុមហ៊ុនកំពុងរក Developer ដែលចេះ Flutter។</p><audio controls preload="none" src="assets/audio/v05.flac"></audio><div class="meta">mey · woman</div></div><div class="card voice"><div class="vhead"><span class="chip">Excited</span><span class="chip ghost">Khmer</span></div>
+      <p class="km vtext">កោះរ៉ុងត្រូវបានប្រកាសឈប់នៅលើផ្លូវលំចេក។</p><audio controls preload="none" src="assets/audio/v06.flac"></audio><div class="meta">oudom · man</div></div><div class="card voice"><div class="vhead"><span class="chip">Soft</span><span class="chip ghost">Khmer + English</span></div>
+      <p class="km vtext">ចុះ ចូលទៅ Battery រួចចុចលើ Charger។</p><audio controls preload="none" src="assets/audio/v07.flac"></audio><div class="meta">maly · woman</div></div><div class="card voice"><div class="vhead"><span class="chip">Serious</span><span class="chip ghost">Khmer</span></div>
+      <p class="km vtext">ពន្ធនាំចូលគ្របដណ្តប់លើទំនិញជាច្រើនប្រភេទ។</p><audio controls preload="none" src="assets/audio/v08.flac"></audio><div class="meta">phanin · woman</div></div><div class="card voice"><div class="vhead"><span class="chip">Sad</span><span class="chip ghost">Khmer + English</span></div>
+      <p class="km vtext">ពួកគេមិនបាច់ Book Room ទេ។</p><audio controls preload="none" src="assets/audio/v09.flac"></audio><div class="meta">aura · man</div></div><div class="card voice"><div class="vhead"><span class="chip">Soft</span><span class="chip ghost">Khmer</span></div>
+      <p class="km vtext">ឈ្មោះខែទីបួនប្រើតាមចន្ទគតិ។</p><audio controls preload="none" src="assets/audio/v10.flac"></audio><div class="meta">rithy · man</div></div><div class="card voice"><div class="vhead"><span class="chip">Happy</span><span class="chip ghost">Khmer + English</span></div>
+      <p class="km vtext">អូនសូមផ្ញើ Invoice ឆាប់ឆាប់។</p><audio controls preload="none" src="assets/audio/v11.flac"></audio><div class="meta">neary · woman</div></div><div class="card voice"><div class="vhead"><span class="chip">Calm</span><span class="chip ghost">Khmer</span></div>
+      <p class="km vtext">រាត្រីថ្ងៃនោះខ្ញុំព្រះករុណាសិងមិនលក់ពេញមួយយប់។</p><audio controls preload="none" src="assets/audio/v12.flac"></audio><div class="meta">seth · man</div></div><div class="card voice"><div class="vhead"><span class="chip">Soft</span><span class="chip ghost">Khmer + English</span></div>
+      <p class="km vtext">ការប្រមូលវាយនភ័ណ្ឌ LACMA។</p><audio controls preload="none" src="assets/audio/v13.flac"></audio><div class="meta">bora · man</div></div><div class="card voice"><div class="vhead"><span class="chip">Serious</span><span class="chip ghost">Khmer</span></div>
+      <p class="km vtext">មានប្រជាប្រិយភាពខ្លាំងក្លានាសម័យនោះ។</p><audio controls preload="none" src="assets/audio/v14.flac"></audio><div class="meta">theary · woman</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="use" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Use</div>
+    <h2>Three ways to make speech</h2>
+    <div class="grid g3">
+      <div class="card"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-mic"/></svg></div><h3>1 · Clone a voice</h3><p>Give a clean 4–9 s clip and exactly what is said in it. VoxPocket reads new sentences in that voice.</p></div>
+      <div class="card"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg></div><h3>2 · Clone + style</h3><p>Put a style in brackets before the text: <span class="km">(sad, low and slow tone)សួស្តី…</span> Happy, sad, angry, whisper, surprised, news reader…</p></div>
+      <div class="card"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-wand-sparkles"/></svg></div><h3>3 · Design a voice</h3><p>No clip at all: describe the voice. <span class="km">(A young woman, clear and bright voice)សួស្តី…</span></p></div>
+    </div>
+    <pre class="code" style="margin-top:20px"><span class="k">from</span> voxcpm.core <span class="k">import</span> VoxCPM
+<span class="k">import</span> soundfile <span class="k">as</span> sf
+
+m = VoxCPM.from_pretrained(hf_model_id=<span class="s">"INGMUYLEANG/VoxPocket-v5"</span>, load_denoiser=<span class="k">False</span>)
+sr = m.tts_model.sample_rate  <span class="c"># 44100</span>
+
+<span class="c"># 1) clone a voice: a clean 4–9 s clip + exactly what is said in it</span>
+wav = m.generate(text=<span class="s">"សួស្តីបងប្អូនទាំងអស់គ្នា។"</span>, prompt_wav_path=<span class="s">"my_voice.wav"</span>,
+                 prompt_text=<span class="s">"&lt;words spoken in my_voice.wav&gt;"</span>, cfg_value=2.0, inference_timesteps=10)
+<span class="c"># 2) clone + style</span>
+wav = m.generate(text=<span class="s">"(angry and upset tone)ហេតុអ្វីបានជាអ្នកមកយឺតម្ដងទៀត?"</span>, prompt_wav_path=<span class="s">"my_voice.wav"</span>,
+                 prompt_text=<span class="s">"&lt;words spoken in my_voice.wav&gt;"</span>)
+<span class="c"># 3) design a voice, no clip</span>
+wav = m.generate(text=<span class="s">"(A young woman, clear and bright voice, cheerful tone)សួស្តី។"</span>)
+sf.write(<span class="s">"voxpocket.wav"</span>, wav, sr)</pre>
+    <p class="meta" style="margin-top:10px">Tips: short clean reference clips with their exact words; split long text into sentences.</p>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <div class="eyebrow">Results</div>
+    <h2>Reads Khmer better than its 2.4B teacher</h2>
+    <p class="sub">40 held-out Khmer sentences, same voice clip, cfg 2.0, 10 steps, seed 0. A Khmer speech recognizer (<code>seanghay/Qwen3-ASR-0.6B-Khmer</code>) listens back and counts letter errors. Lower is better.</p>
+    <div class="card"><div class="stats">
+      <div class="stat"><b>4.3%</b><span>median letter error (VoxCPM2: 4.8%)</span></div>
+      <div class="stat"><b>2.7×</b><span>smaller than VoxCPM2</span></div>
+      <div class="stat"><b>3.6×</b><span>faster than real time</span></div>
+      <div class="stat"><b>64 ms</b><span>to the first sound (streaming)</span></div>
+    </div></div>
+    <div class="card" style="margin-top:18px;overflow:auto">
+      <table class="res">
+        <tr><th>40 held-out sentences</th><th>median error</th><th>mean error</th><th>sentences &gt; 10% errors</th></tr>
+        <tr class="me"><td>VoxPocket v5 (0.89B)</td><td>4.3%</td><td>6.1%</td><td>8 / 40</td></tr>
+        <tr><td>VoxPocket v4</td><td>6.6%</td><td>7.2%</td><td>10 / 40</td></tr>
+        <tr><td>VoxCPM2 (2.38B, the teacher)</td><td>4.8%</td><td>7.0%</td><td>12 / 40</td></tr>
+      </table>
+    </div>
+    <div class="grid g2" style="margin-top:18px">
+      <a class="zoom" href="assets/fig/bench_quality.png" data-alt="Reading quality"><img class="figure" src="assets/fig/bench_quality.png" alt="Reading quality: letter error per model" loading="lazy"></a>
+      <a class="zoom" href="assets/fig/bench_speed_memory_power.png" data-alt="Speed, memory and power"><img class="figure" src="assets/fig/bench_speed_memory_power.png" alt="Speed, memory and power" loading="lazy"></a>
+      <a class="zoom" href="assets/fig/bench_long_text.png" data-alt="Long text"><img class="figure" src="assets/fig/bench_long_text.png" alt="Long text in one go" loading="lazy"></a>
+      <a class="zoom" href="assets/fig/training_progress.png" data-alt="Training progress"><img class="figure" src="assets/fig/training_progress.png" alt="Training progress" loading="lazy"></a>
+    </div>
+    <p class="meta" style="margin-top:10px">Speed, memory and power measured on 1× NVIDIA GeForce RTX 5090 (the GPU that trained v5) with the same settings for all models: VoxPocket 3.8 / 6.3 GB peak GPU memory (short / long text) vs 6.5 / 8.9 GB, 0.80 vs 1.29 Wh per minute of speech. On a second machine the same quality test gives 3.7% median error (v4: 5.1%).</p>
+  </div>
+</section>
+
+<section id="docs" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Docs</div>
+    <h2>How VoxPocket works</h2>
+    <p class="sub">VoxPocket is <b>VoxCPM 1.5</b> (an open, tokenizer-free TTS model) fine-tuned on Khmer over several rounds, with speech distilled from the bigger <b>VoxCPM2</b>.</p>
+    <a class="zoom" href="assets/fig/architecture.png" data-alt="VoxPocket architecture"><img class="figure" src="assets/fig/architecture.png" alt="VoxPocket: training, the model, and three ways to use it" loading="lazy"></a>
+    <div class="grid g3" style="margin-top:22px">
+      <div class="card"><h3>The data · ~1,010 h</h3><p><b>237 h</b> of real Khmer speech (double weight, so voices stay natural), <b>~600 h</b> of synthetic VoxCPM2 speech checked by a speech recognizer (kept only ≤ 15% errors), and <b>157 h</b> of voice clip + style pairs. 340 h are new in v5: emotions, long reading, English words inside Khmer.</p></div>
+      <div class="card"><h3>The model · 0.89B</h3><p>A text-semantic language model (24 layers) plans the speech; a residual acoustic model and a local diffusion transformer add the voice and tone; the AudioVAE decoder makes the 44.1 kHz waveform. No audio tokenizer.</p></div>
+      <div class="card"><h3>The training</h3><p>From the previous VoxPocket, one more full pass over the data (778,028 clips): learning rate 2e-5 with warm-up, 43,200 steps, about 14 h on one RTX 5090. Every release is checked by listening back with a Khmer speech recognizer.</p></div>
+    </div>
+    <div class="warn" style="margin-top:22px"><svg class="ic" aria-hidden="true"><use href="#i-shield-alert"/></svg><div><b>Limits.</b> Very long text in one go still makes mistakes: split it into sentences. Styles change cloned voices less than designed voices. Rare names can be swapped; English is basic. <b>Excited, Angry and Surprised</b> are used with Khmer text for now; for English-only text they are coming soon (the demo reads those lines in a plain tone). All styles work with Khmer and Khmer + English text. <b>Do not impersonate real people</b>; clone only voices you have permission to use.</div></div>
+  </div>
+</section>
+
+<section id="dataset">
+  <div class="wrap">
+    <div class="eyebrow">Dataset</div>
+    <h2>VoxPocket Khmer TTS dataset</h2>
+    <p class="sub">Synthetic Khmer speech made with VoxCPM2, every clip read back by a speech recognizer and kept only when it was right.</p>
+    <div class="grid g2">
+      <a class="card" href="https://huggingface.co/datasets/INGMUYLEANG/voxpocket-khmer-tts-v4" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg></div><h3>Full dataset <span class="status st-test">Request access</span></h3><p><b>102,224 clips · 94.9 h · 44.1 kHz FLAC.</b> Khmer, Khmer + English and English; cloned, styled and designed voices; text, style, voice and quality columns. Access is approved by hand.</p></a>
+      <a class="card" href="https://huggingface.co/datasets/INGMUYLEANG/voxpocket-khmer-tts-preview" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-volume-2"/></svg></div><h3>Preview <span class="status st-ok">Open</span></h3><p>14 short clips, one per voice, to listen in the browser (the ones on this page).</p></a>
+    </div>
+  </div>
+</section>
+
+<section id="open" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Open source</div>
+    <h2>Model, demo and code</h2>
+    <div class="grid g3">
+      <a class="card" href="https://huggingface.co/INGMUYLEANG/VoxPocket-v5" target="_blank" rel="noopener"><div class="icon"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg></div><h3>VoxPocket v5</h3><p>The model on Hugging Face, with usage and results.</p></a>
+      <a class="card" href="https://huggingface.co/spaces/INGMUYLEANG/VoxPocket-v4-demo" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg></div><h3>Web demo</h3><p>Ready voices, styles and voice design in the browser.</p></a>
+      <a class="card" href="https://github.com/MuyleangIng" target="_blank" rel="noopener"><div class="icon"><svg class="ic ib" aria-hidden="true"><use href="#b-github"/></svg></div><h3>GitHub</h3><p>Code and other projects by Ing Muyleang.</p></a>
+      <a class="card" href="https://huggingface.co/openbmb/VoxCPM1.5" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg></div><h3>Built on VoxCPM</h3><p>VoxCPM 1.5 (base) and VoxCPM2 (teacher) by OpenBMB. Please credit VoxCPM too.</p></a>
+      <a class="card" href="https://muyleanging.github.io/akkhara-web/" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg></div><h3>Also by the author: Akkhara</h3><p>Type Sing Khmer, get Khmer script: an offline AI keyboard for phones and computers.</p></a>
+      <a class="card" href="https://huggingface.co/INGMUYLEANG" target="_blank" rel="noopener"><div class="icon"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg></div><h3>All models</h3><p>Everything by Ing Muyleang on Hugging Face.</p></a>
+    </div>
+  </div>
+</section>
+
+<section id="cite">
+  <div class="wrap">
+    <div class="eyebrow">Citation</div>
+    <h2>Using VoxPocket? Please cite it</h2>
+    <div class="cite"><button class="btn btn-ghost btn-sm" id="copyCite"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg>Copy</button><pre class="code" id="bib">@misc{ing2026voxpocket,
+  author    = {Ing, Muyleang},
+  title     = {VoxPocket: A Small Khmer Text-to-Speech Model with Voice Cloning and Styles},
+  year      = {2026},
+  publisher = {Hugging Face},
+  url       = {https://huggingface.co/INGMUYLEANG/VoxPocket-v5}
+}</pre></div>
+    <p class="meta" style="margin-top:10px">VoxPocket is built on VoxCPM 1.5 and its synthetic data was made with VoxCPM2 (OpenBMB); please also credit VoxCPM. Model license: Apache-2.0.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 Ing Muyleang · VoxPocket · built with the help of AI tools (agy, Claude)</div>
+    <div id="contact"><a href="https://huggingface.co/INGMUYLEANG">Hugging Face</a> · <a href="https://github.com/MuyleangIng">GitHub</a> · <a href="https://muyleanging.github.io/akkhara-web/#support">Support my work ♥</a></div>
+  </div>
+</footer>
+
+<div id="lightbox" aria-hidden="true"><span class="hint">Swipe / scroll to look around</span><button aria-label="Close">✕</button><img alt=""></div>
+<button id="toTop" class="glass" aria-label="Back to top"><svg class="ic" aria-hidden="true"><use href="#i-arrow-up"/></svg></button>
+
+<script>
+// ---- phone menu, zoomable pictures, back to top, active link ---------------------------------
+(function(){
+  const btn=document.getElementById('menuBtn2'), menu=document.getElementById('mobileMenu');
+  const close=()=>{menu.classList.remove('open'); btn.classList.remove('on'); btn.setAttribute('aria-expanded','false');};
+  btn.onclick=e=>{e.stopPropagation(); const o=menu.classList.toggle('open'); btn.classList.toggle('on',o); btn.setAttribute('aria-expanded',o);};
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+  document.addEventListener('click',e=>{if(menu.classList.contains('open') && !menu.contains(e.target)) close();});
+  addEventListener('resize',()=>{if(innerWidth>900) close();});
+
+  const lb=document.getElementById('lightbox'), lbImg=lb.querySelector('img');
+  document.querySelectorAll('a.zoom').forEach(a=>a.addEventListener('click',e=>{
+    e.preventDefault(); lbImg.src=a.getAttribute('href'); lbImg.alt=a.dataset.alt||'';
+    lb.classList.add('open'); lb.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+  }));
+  const shut=()=>{lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); document.body.style.overflow='';};
+  lb.querySelector('button').onclick=shut;
+  lb.addEventListener('click',e=>{if(e.target===lb) shut();});
+  addEventListener('keydown',e=>{if(e.key==='Escape') shut();});
+
+  const top=document.getElementById('toTop');
+  top.onclick=()=>scrollTo({top:0,behavior:'smooth'});
+  const links=[...document.querySelectorAll('.navlinks a[href^="#"], #dock a[href^="#"]')];
+  const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  addEventListener('scroll',()=>{
+    top.classList.toggle('show',scrollY>600);
+    let cur=secs[0]; for(const s of secs){ if(s.getBoundingClientRect().top<120) cur=s; }
+    links.forEach(a=>a.classList.toggle('active',document.querySelector(a.getAttribute('href'))===cur));
+  },{passive:true});
+})();
+
+// ---- light / dark (remembered on this device) ----------------------------------------------
+(function(){
+  const root=document.documentElement, key='akkhara-theme';
+  try{const t=localStorage.getItem(key); if(t) root.dataset.theme=t;}catch(e){}
+  document.getElementById('theme').onclick=()=>{
+    const dark=root.dataset.theme? root.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme=dark?'light':'dark';
+    try{localStorage.setItem(key,root.dataset.theme);}catch(e){}
+  };
+})();
+
+
+// ---- one audio at a time; copy citation ------------------------------------------------------
+document.querySelectorAll('audio').forEach(a=>a.addEventListener('play',()=>document.querySelectorAll('audio').forEach(b=>{if(b!==a) b.pause();})));
+document.getElementById('copyCite').onclick=async e=>{
+  try{await navigator.clipboard.writeText(document.getElementById('bib').textContent);}catch(_){}
+  const b=e.currentTarget, t=b.innerHTML; b.textContent='Copied ✓'; setTimeout(()=>b.innerHTML=t,1800);
+};
+</script>
+<script src="assets/try.js?v=5" defer></script>
+</body>
+</html>
