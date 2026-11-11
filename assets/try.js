@@ -4,7 +4,7 @@
 //  - Sing Khmer    -> the Akkhara demo Space (Latin letters -> Khmer, top 5)
 (() => {
   const POCKET = "https://ingmuyleang-voxpocket-v4-demo.hf.space/gradio_api";
-  const AKKHARA = "https://ingmuyleang-akkhara-demo.hf.space/gradio_api";
+  const AKKHARA = "https://muyleanging-akkhara-demo.hf.space/gradio_api";
   // address of the VoxPocket HD API (empty = HD shows "coming soon"); ?api=http://localhost:8080 for a local test
   let HD = "https://voxpocket-hd-715345118114.asia-southeast1.run.app";
   const q = new URLSearchParams(location.search).get("api");
@@ -150,7 +150,7 @@
     cands.replaceChildren(el("span", { className: "tmuted", textContent: "…" }));
     timer = setTimeout(async () => {
       try {
-        const out = await gradio(AKKHARA, "transliterate", [s, false, "hub: INGMUYLEANG/akkhara-mini"]);
+        const out = await gradio(AKKHARA, "transliterate", [s, false, "hub: INGMUYLEANG/Akkhara-Mini-Khmer-ONNX"]);
         if (my !== seq) return;
         const list = (out[1]?.choices ?? []).map((c) => String(c[0]).replace(/^\d+\.\s*/, ""));
         cands.replaceChildren(...list.map((k) => {

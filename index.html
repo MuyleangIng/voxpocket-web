@@ -170,7 +170,11 @@ section,header{scroll-margin-top:70px}
 #toTop{position:fixed;right:16px;bottom:20px;z-index:25;width:46px;height:46px;border-radius:50%;color:var(--ink);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s;display:grid;place-items:center}
 #toTop.show{opacity:1;pointer-events:auto}
 footer{padding:40px 0;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
-footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}
+footer .wrap{display:flex;flex-direction:column;gap:20px}
+.fgrid{display:grid;gap:10px}
+.flinks{line-height:1.7}
+.flinks b{color:var(--ink);margin-right:6px}
+.fbottom{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;border-top:1px solid var(--line);padding-top:16px}
 
 /* grid/flex children may shrink below their content width (no sideways scroll on phones) */
 .hero .wrap>*,.grid>*,.support>*,.g2>*{min-width:0}
@@ -339,7 +343,7 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
       <a href="#top"><svg class="ic" aria-hidden="true"><use href="#i-house"/></svg><span>Home</span></a>
       <a href="#listen"><svg class="ic" aria-hidden="true"><use href="#i-volume-2"/></svg><span>Listen</span></a>
       <a href="#try"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg><span>Try it</span></a>
-      <a href="https://huggingface.co/INGMUYLEANG/VoxPocket-v5" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg><span class="lbl-x">Model</span></a>
+      <a href="https://huggingface.co/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg><span class="lbl-x">Model</span></a>
       <a href="#docs"><svg class="ic" aria-hidden="true"><use href="#i-book-open"/></svg><span>Docs</span></a>
       <a href="#results"><svg class="ic" aria-hidden="true"><use href="#i-gauge"/></svg><span class="lbl-x">Results</span></a>
       <a href="#dataset"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg><span class="lbl-x">Dataset</span></a>
@@ -361,9 +365,9 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
   <a href="#open"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg>Open source &amp; code</a>
   <a href="#cite"><svg class="ic" aria-hidden="true"><use href="#i-quote"/></svg>Citation</a>
   <div class="grp">Online</div>
-  <a href="https://huggingface.co/spaces/INGMUYLEANG/VoxPocket-v4-demo" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Try the demo<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
-  <a href="https://huggingface.co/INGMUYLEANG/VoxPocket-v5" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg>Model on Hugging Face<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
-  <a href="https://huggingface.co/datasets/INGMUYLEANG/voxpocket-khmer-tts-v4" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg>Dataset (request access)<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
+  <a href="https://huggingface.co/spaces/muyleanging/VoxPocket-TTS-Demo" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Try the demo<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
+  <a href="https://huggingface.co/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg>Model on Hugging Face<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
+  <a href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg>Dataset (request access)<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
   <a href="https://github.com/MuyleangIng" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-github"/></svg>GitHub<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
 </div>
 
@@ -371,7 +375,7 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
   <a href="#top" data-sec="top"><svg class="ic" aria-hidden="true"><use href="#i-house"/></svg>Home</a>
   <a href="#try" data-sec="try"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Try it</a>
   <a href="#listen" data-sec="listen"><svg class="ic" aria-hidden="true"><use href="#i-volume-2"/></svg>Listen</a>
-  <a href="https://huggingface.co/INGMUYLEANG/VoxPocket-v5" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg>Model</a>
+  <a href="https://huggingface.co/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg>Model</a>
   <button id="menuBtn2" aria-label="More" aria-expanded="false"><svg class="ic" aria-hidden="true"><use href="#i-ellipsis"/></svg>More</button>
 </nav>
 
@@ -382,8 +386,8 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
       <h1>Khmer voice,<br>in your <span class="km">pocket</span>.</h1>
       <p class="lead">VoxPocket reads <b>Khmer</b> and <b>Khmer mixed with English</b> aloud in a natural voice. <b>Clone a voice</b> from a 4–9 second clip, give it a <b>style</b> (happy, sad, whisper…), or <b>design</b> a new voice from a description.</p>
       <div class="cta">
-        <a class="btn btn-primary" href="https://huggingface.co/spaces/INGMUYLEANG/VoxPocket-v4-demo" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Try the demo</a>
-        <a class="btn btn-ghost" href="https://huggingface.co/INGMUYLEANG/VoxPocket-v5" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg>Model</a>
+        <a class="btn btn-primary" href="https://huggingface.co/spaces/muyleanging/VoxPocket-TTS-Demo" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Try the demo</a>
+        <a class="btn btn-ghost" href="https://huggingface.co/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg>Model</a>
       </div>
       <div class="trust">
         <span><b>0.89B</b> parameters · <b>44.1 kHz</b> · <b>3.6×</b> real time</span>
@@ -412,7 +416,7 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
       <div class="trow">
         <div class="tlabel">Model</div>
         <div class="tchips" id="try-engine"></div>
-        <p class="tsmall" id="try-hdnote">Higher quality voice: powered by <a href="https://huggingface.co/INGMUYLEANG/VoxPocket-v5" target="_blank" rel="noopener"> VoxPocket on Hugging Face</a>. Usually ready in a few seconds; when many people use it, requests wait in line.</p>
+        <p class="tsmall" id="try-hdnote">Higher quality voice: powered by <a href="https://huggingface.co/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener"> VoxPocket on Hugging Face</a>. Usually ready in a few seconds; when many people use it, requests wait in line.</p>
       </div>
       <div class="trow">
         <div class="tlabel">Text</div>
@@ -420,7 +424,7 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
         <div class="tsing" id="try-sing" hidden>
           <input type="text" id="try-latin" placeholder="sok sbay te" autocapitalize="off" autocomplete="off" spellcheck="false" aria-label="Khmer in Latin letters">
           <div class="tchips" id="try-cands"></div>
-          <p class="tsmall">Tap a result to add it to the text. Sing Khmer by <a href="https://muyleanging.github.io/akkhara-web/" target="_blank" rel="noopener">Akkhara</a> · <a href="https://huggingface.co/INGMUYLEANG/akkhara-mini" target="_blank" rel="noopener">model</a></p>
+          <p class="tsmall">Tap a result to add it to the text. Sing Khmer by <a href="https://muyleanging.github.io/akkhara-web/" target="_blank" rel="noopener">Akkhara</a> · <a href="https://huggingface.co/muyleanging/Akkhara-Mini-Khmer-ONNX" target="_blank" rel="noopener">model</a></p>
         </div>
         <textarea id="try-text" class="km" maxlength="500" aria-label="Text to read">សួស្តីបងប្អូនទាំងអស់គ្នា អរគុណច្រើនសម្រាប់ការគាំទ្រ។</textarea>
       </div>
@@ -456,7 +460,7 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
   <div class="wrap">
     <div class="eyebrow">Listen</div>
     <h2>14 voices, many moods</h2>
-    <p class="sub">Clips from the open <a href="https://huggingface.co/datasets/INGMUYLEANG/voxpocket-khmer-tts-preview" target="_blank" rel="noopener">preview dataset</a>: one per voice, with a style. Some mix English words into Khmer, the way people really talk.</p>
+    <p class="sub">Clips from the open <a href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer-Preview" target="_blank" rel="noopener">preview dataset</a>: one per voice, with a style. Some mix English words into Khmer, the way people really talk.</p>
     <div class="swipe">← swipe to hear all 14 voices →</div>
     <div class="voices">
       <div class="card voice"><div class="vhead"><span class="chip">Whisper</span><span class="chip ghost">Khmer</span></div>
@@ -490,7 +494,7 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
     <pre class="code" style="margin-top:20px"><span class="k">from</span> voxcpm.core <span class="k">import</span> VoxCPM
 <span class="k">import</span> soundfile <span class="k">as</span> sf
 
-m = VoxCPM.from_pretrained(hf_model_id=<span class="s">"INGMUYLEANG/VoxPocket-v5"</span>, load_denoiser=<span class="k">False</span>)
+m = VoxCPM.from_pretrained(hf_model_id=<span class="s">"muyleanging/VoxPocket-TTS-Khmer"</span>, load_denoiser=<span class="k">False</span>)
 sr = m.tts_model.sample_rate  <span class="c"># 44100</span>
 
 <span class="c"># 1) clone a voice: a clean 4–9 s clip + exactly what is said in it</span>
@@ -556,8 +560,8 @@ sf.write(<span class="s">"voxpocket.wav"</span>, wav, sr)</pre>
     <h2>VoxPocket Khmer TTS dataset</h2>
     <p class="sub">Synthetic Khmer speech made with VoxCPM2, every clip read back by a speech recognizer and kept only when it was right.</p>
     <div class="grid g2">
-      <a class="card" href="https://huggingface.co/datasets/INGMUYLEANG/voxpocket-khmer-tts-v4" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg></div><h3>Full dataset <span class="status st-test">Request access</span></h3><p><b>102,224 clips · 94.9 h · 44.1 kHz FLAC.</b> Khmer, Khmer + English and English; cloned, styled and designed voices; text, style, voice and quality columns. Access is approved by hand.</p></a>
-      <a class="card" href="https://huggingface.co/datasets/INGMUYLEANG/voxpocket-khmer-tts-preview" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-volume-2"/></svg></div><h3>Preview <span class="status st-ok">Open</span></h3><p>14 short clips, one per voice, to listen in the browser (the ones on this page).</p></a>
+      <a class="card" href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg></div><h3>Full dataset <span class="status st-test">Request access</span></h3><p><b>448,356 clips · 610 h · 44.1 kHz FLAC.</b> Khmer, Khmer + English and English; cloned, styled and designed voices; text, style, voice and quality columns. Access is approved by hand.</p></a>
+      <a class="card" href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer-Preview" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-volume-2"/></svg></div><h3>Preview <span class="status st-ok">Open</span></h3><p>14 short clips, one per voice, to listen in the browser (the ones on this page).</p></a>
     </div>
   </div>
 </section>
@@ -567,12 +571,12 @@ sf.write(<span class="s">"voxpocket.wav"</span>, wav, sr)</pre>
     <div class="eyebrow">Open source</div>
     <h2>Model, demo and code</h2>
     <div class="grid g3">
-      <a class="card" href="https://huggingface.co/INGMUYLEANG/VoxPocket-v5" target="_blank" rel="noopener"><div class="icon"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg></div><h3>VoxPocket v5</h3><p>The model on Hugging Face, with usage and results.</p></a>
-      <a class="card" href="https://huggingface.co/spaces/INGMUYLEANG/VoxPocket-v4-demo" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg></div><h3>Web demo</h3><p>Ready voices, styles and voice design in the browser.</p></a>
+      <a class="card" href="https://huggingface.co/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener"><div class="icon"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg></div><h3>VoxPocket v5</h3><p>The model on Hugging Face, with usage and results.</p></a>
+      <a class="card" href="https://huggingface.co/spaces/muyleanging/VoxPocket-TTS-Demo" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg></div><h3>Web demo</h3><p>Ready voices, styles and voice design in the browser.</p></a>
       <a class="card" href="https://github.com/MuyleangIng" target="_blank" rel="noopener"><div class="icon"><svg class="ic ib" aria-hidden="true"><use href="#b-github"/></svg></div><h3>GitHub</h3><p>Code and other projects by Ing Muyleang.</p></a>
       <a class="card" href="https://huggingface.co/openbmb/VoxCPM1.5" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg></div><h3>Built on VoxCPM</h3><p>VoxCPM 1.5 (base) and VoxCPM2 (teacher) by OpenBMB. Please credit VoxCPM too.</p></a>
       <a class="card" href="https://muyleanging.github.io/akkhara-web/" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg></div><h3>Also by the author: Akkhara</h3><p>Type Sing Khmer, get Khmer script: an offline AI keyboard for phones and computers.</p></a>
-      <a class="card" href="https://huggingface.co/INGMUYLEANG" target="_blank" rel="noopener"><div class="icon"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg></div><h3>All models</h3><p>Everything by Ing Muyleang on Hugging Face.</p></a>
+      <a class="card" href="https://huggingface.co/muyleanging" target="_blank" rel="noopener"><div class="icon"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg></div><h3>All models</h3><p>Everything by Ing Muyleang on Hugging Face.</p></a>
     </div>
   </div>
 </section>
@@ -586,7 +590,7 @@ sf.write(<span class="s">"voxpocket.wav"</span>, wav, sr)</pre>
   title     = {VoxPocket: A Small Khmer Text-to-Speech Model with Voice Cloning and Styles},
   year      = {2026},
   publisher = {Hugging Face},
-  url       = {https://huggingface.co/INGMUYLEANG/VoxPocket-v5}
+  url       = {https://huggingface.co/muyleanging/VoxPocket-TTS-Khmer}
 }</pre></div>
     <p class="meta" style="margin-top:10px">VoxPocket is built on VoxCPM 1.5 and its synthetic data was made with VoxCPM2 (OpenBMB); please also credit VoxCPM. Model license: Apache-2.0.</p>
   </div>
@@ -594,8 +598,16 @@ sf.write(<span class="s">"voxpocket.wav"</span>, wav, sr)</pre>
 
 <footer>
   <div class="wrap">
-    <div>© 2026 Ing Muyleang · VoxPocket · built with the help of AI tools (agy, Claude)</div>
-    <div id="contact"><a href="https://huggingface.co/INGMUYLEANG">Hugging Face</a> · <a href="https://github.com/MuyleangIng">GitHub</a> · <a href="https://muyleanging.github.io/akkhara-web/#support">Support my work ♥</a></div>
+    <div class="fgrid">
+      <div class="flinks"><b>VoxPocket</b> <a href="https://huggingface.co/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener">Model</a> · <a href="https://huggingface.co/spaces/muyleanging/VoxPocket-TTS-Demo" target="_blank" rel="noopener">Demo</a> · <a href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener">Dataset</a> · <a href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer-Preview" target="_blank" rel="noopener">Preview</a></div>
+      <div class="flinks"><b>Akkhara</b> <a href="https://muyleanging.github.io/akkhara-web/" target="_blank" rel="noopener">Website</a> · <a href="https://huggingface.co/muyleanging/Akkhara-ByT5-Small-Khmer" target="_blank" rel="noopener">Model</a> · <a href="https://huggingface.co/muyleanging/Akkhara-Mini-Khmer-ONNX" target="_blank" rel="noopener">Phone model</a> · <a href="https://huggingface.co/spaces/muyleanging/Akkhara-Demo" target="_blank" rel="noopener">Demo</a> · <a href="https://github.com/MuyleangIng/akkhara-keyboard" target="_blank" rel="noopener">Keyboard</a> · <a href="https://github.com/MuyleangIng/akkhara-desktop" target="_blank" rel="noopener">Desktop</a></div>
+      <div class="flinks"><b>Chakkhu (OCR)</b> <a href="https://muyleanging.github.io/chakkhu-web/" target="_blank" rel="noopener">Website</a> · <a href="https://huggingface.co/muyleanging/Chakkhu-OCR-Khmer" target="_blank" rel="noopener">Model</a> · <a href="https://huggingface.co/spaces/muyleanging/Chakkhu-OCR-Demo" target="_blank" rel="noopener">Demo</a></div>
+      <div class="flinks"><b>Sota (ASR)</b> <a href="https://muyleanging.github.io/sota-web/" target="_blank" rel="noopener">Website</a> · <a href="https://huggingface.co/muyleanging/Sota-ASR-Khmer-ONNX" target="_blank" rel="noopener">Model</a> · <a href="https://huggingface.co/spaces/muyleanging/Sota-ASR-Demo" target="_blank" rel="noopener">Demo</a></div>
+    </div>
+    <div class="fbottom">
+      <div>© 2026 Ing Muyleang · VoxPocket · built with the help of AI tools (agy, Claude)</div>
+      <div id="contact"><a href="https://huggingface.co/muyleanging" target="_blank" rel="noopener">Hugging Face</a> · <a href="https://github.com/MuyleangIng" target="_blank" rel="noopener">GitHub</a> · <a href="https://muyleanging.github.io/akkhara-web/#support">Support my work ♥</a></div>
+    </div>
   </div>
 </footer>
 
@@ -652,6 +664,6 @@ document.getElementById('copyCite').onclick=async e=>{
   const b=e.currentTarget, t=b.innerHTML; b.textContent='Copied ✓'; setTimeout(()=>b.innerHTML=t,1800);
 };
 </script>
-<script src="assets/try.js?v=5" defer></script>
+<script src="assets/try.js?v=6" defer></script>
 </body>
 </html>
