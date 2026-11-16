@@ -348,6 +348,7 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
       <a href="#results"><svg class="ic" aria-hidden="true"><use href="#i-gauge"/></svg><span class="lbl-x">Results</span></a>
       <a href="#dataset"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg><span class="lbl-x">Dataset</span></a>
       <a href="#open"><svg class="ic ib" aria-hidden="true"><use href="#b-github"/></svg><span>Code</span></a>
+      <a href="#donate"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><span>Donate</span></a>
     </div>
     <button id="theme" class="iconbtn" title="Light / dark" aria-label="Switch light or dark mode"><svg class="ic" aria-hidden="true"><use href="#i-sun-moon"/></svg></button>
   </div>
@@ -364,6 +365,7 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
   <a href="#dataset"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg>Dataset</a>
   <a href="#open"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg>Open source &amp; code</a>
   <a href="#cite"><svg class="ic" aria-hidden="true"><use href="#i-quote"/></svg>Citation</a>
+  <a href="#donate"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Donate<small>Kantha Bopha</small></a>
   <div class="grp">Online</div>
   <a href="https://huggingface.co/spaces/muyleanging/VoxPocket-TTS-Demo" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Try the demo<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
   <a href="https://huggingface.co/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg>Model on Hugging Face<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
@@ -596,6 +598,68 @@ sf.write(<span class="s">"voxpocket.wav"</span>, wav, sr)</pre>
   </div>
 </section>
 
+<section id="donate" class="alt">
+<style>
+.dn{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch}
+.dn>*{min-width:0}
+.dn-why p{margin:0 0 12px;color:var(--ink2)}
+.dn-why .km{font-size:17px;line-height:1.75}
+.dn-steps{margin:16px 0 0;padding:16px 0 0 20px;border-top:1px solid var(--line);color:var(--ink2)}
+.dn-steps li{margin:0 0 8px}
+.dn-bank{border-radius:var(--radius);padding:24px;color:#fff;box-shadow:var(--shadow);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--blue) 55%,#0b1020),color-mix(in srgb,var(--blue) 85%,#0b1020));
+  display:grid;grid-template-columns:190px 1fr;gap:22px;align-items:center}
+.dn-bank img{width:100%;height:auto;display:block;border-radius:14px;background:#fff}
+.dn-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;opacity:.8;margin-top:12px}
+.dn-label:first-child{margin-top:0}
+.dn-acct{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.dn-num{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:26px;font-weight:700;letter-spacing:.05em;white-space:nowrap}
+.dn-num.sm{font-size:20px}
+.dn-copy{background:#ffffff22;color:#fff;border:1px solid #ffffff55;border-radius:8px;padding:5px 11px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.dn-copy:hover{background:#ffffff33}
+.dn-bank small{display:block;opacity:.85;margin-top:12px;font-size:13px}
+@media (max-width:900px){.dn{grid-template-columns:1fr}}
+@media (max-width:560px){.dn-bank{grid-template-columns:1fr;padding:20px}.dn-bank img{max-width:240px;margin:0 auto}.dn-num{font-size:23px}}
+</style>
+  <div class="wrap">
+    <div class="eyebrow">Support VoxPocket</div>
+    <h2>Donate, and help sick children in Cambodia</h2>
+    <p class="sub">VoxPocket is free and made by one person. Every donation to VoxPocket will be given to
+      <b>Kantha Bopha Children's Hospital</b>, which treats sick children in Cambodia.</p>
+    <div class="dn">
+      <div class="card dn-why">
+        <p class="km">ប្រាក់ឧបត្ថម្ភទាំងអស់សម្រាប់ VoxPocket នឹងប្រគល់ជូន <b>មន្ទីរពេទ្យកុមារគន្ធបុប្ផា</b> ដើម្បីជួយព្យាបាលកុមារឈឺនៅកម្ពុជា។</p>
+        <p>You support free Khmer AI tools, and the money goes to children who need care. Any amount helps. Thank you 🙏 <span class="km">អរគុណច្រើន!</span></p>
+        <ol class="dn-steps">
+          <li>Open <b>ABA Mobile</b> (or any bank app with KHQR).</li>
+          <li>Tap <b>Scan QR</b> and scan the code, or tap <b>Transfer → ABA account</b> and paste the account number.</li>
+          <li>Send any amount, in USD or KHR.</li>
+        </ol>
+      </div>
+      <div class="dn-bank">
+        <img src="assets/aba-khqr.jpg" alt="ABA KHQR code for ING MUYLEANG" width="494" height="660" loading="lazy">
+        <div>
+          <div class="dn-label">ABA Bank · Account name</div>
+          <div><b>ING MUYLEANG</b></div>
+          <div class="dn-label">USD account</div>
+          <div class="dn-acct"><span class="dn-num">008 072 001</span><button class="dn-copy" data-copy="008072001">Copy</button></div>
+          <div class="dn-label">KHR account</div>
+          <div class="dn-acct"><span class="dn-num sm">600 726 637</span><button class="dn-copy" data-copy="600726637">Copy</button></div>
+          <small>Open ABA Mobile → Transfer / Scan QR</small>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+document.querySelectorAll('#donate .dn-copy').forEach(b=>b.addEventListener('click',async()=>{
+  const t=b.textContent;
+  try{await navigator.clipboard.writeText(b.dataset.copy); b.textContent='Copied ✓';}
+  catch(e){b.textContent=b.dataset.copy;}
+  setTimeout(()=>b.textContent=t,1800);
+}));
+</script>
+</section>
+
 <footer>
   <div class="wrap">
     <div class="fgrid">
@@ -606,7 +670,7 @@ sf.write(<span class="s">"voxpocket.wav"</span>, wav, sr)</pre>
     </div>
     <div class="fbottom">
       <div>© 2026 Ing Muyleang · VoxPocket · built with the help of AI tools (agy, Claude)</div>
-      <div id="contact"><a href="https://huggingface.co/muyleanging" target="_blank" rel="noopener">Hugging Face</a> · <a href="https://github.com/MuyleangIng" target="_blank" rel="noopener">GitHub</a> · <a href="https://muyleanging.github.io/akkhara-web/#support">Support my work ♥</a></div>
+      <div id="contact"><a href="https://huggingface.co/muyleanging" target="_blank" rel="noopener">Hugging Face</a> · <a href="https://github.com/MuyleangIng" target="_blank" rel="noopener">GitHub</a> · <a href="#donate">Donate ♥ Kantha Bopha</a></div>
     </div>
   </div>
 </footer>
