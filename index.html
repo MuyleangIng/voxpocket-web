@@ -366,7 +366,7 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
   <div class="grp">Online</div>
   <a href="https://huggingface.co/spaces/muyleanging/VoxPocket-TTS-Demo" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Try the demo<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
   <a href="https://huggingface.co/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-huggingface"/></svg>Model on Hugging Face<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
-  <a href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg>Dataset (request access)<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
+  <a href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer-Data-Preview" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg>Data preview<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
   <a href="https://github.com/MuyleangIng" target="_blank" rel="noopener"><svg class="ic ib" aria-hidden="true"><use href="#b-github"/></svg>GitHub<svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg></a>
 </div>
 
@@ -459,7 +459,7 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
   <div class="wrap">
     <div class="eyebrow">Listen</div>
     <h2>14 voices, many moods</h2>
-    <p class="sub">Clips from the open <a href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer-Preview" target="_blank" rel="noopener">preview dataset</a>: one per voice, with a style. Some mix English words into Khmer, the way people really talk.</p>
+    <p class="sub">Sample clips, one per voice (200 more in the open <a href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer-Data-Preview" target="_blank" rel="noopener">data preview</a>), with a style. Some mix English words into Khmer, the way people really talk.</p>
     <div class="swipe">← swipe to hear all 14 voices →</div>
     <div class="voices">
       <div class="card voice"><div class="vhead"><span class="chip">Whisper</span><span class="chip ghost">Khmer</span></div>
@@ -557,10 +557,10 @@ sf.write(<span class="s">"voxpocket.wav"</span>, wav, sr)</pre>
   <div class="wrap">
     <div class="eyebrow">Dataset</div>
     <h2>VoxPocket Khmer TTS dataset</h2>
-    <p class="sub">Synthetic Khmer speech made with VoxCPM2, every clip read back by a speech recognizer and kept only when it was right.</p>
+    <p class="sub">All VoxPocket training speech, cleaned into one set (updated 2026-11-19): real Khmer recordings plus synthetic speech made with VoxCPM2. Duplicates, dull clips and test sentences removed; style words kept apart from the spoken text.</p>
     <div class="grid g2">
-      <a class="card" href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg></div><h3>Full dataset <span class="status st-test">Request access</span></h3><p><b>448,356 clips · 610 h · 44.1 kHz FLAC.</b> Khmer, Khmer + English and English; cloned, styled and designed voices; text, style, voice and quality columns. Access is approved by hand.</p></a>
-      <a class="card" href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer-Preview" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-volume-2"/></svg></div><h3>Preview <span class="status st-ok">Open</span></h3><p>14 short clips, one per voice, to listen in the browser (the ones on this page).</p></a>
+      <div class="card"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg></div><h3>Full dataset <span class="status st-test">Private</span></h3><p><b>783,592 clips · 1,256 h · ≈6,255 voices · 44.1 kHz FLAC.</b> Khmer, Khmer + English and English; emotions, storytelling, numbers, long reading. Private because it includes real people's recordings and voice clones.</p></div>
+      <a class="card" href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer-Data-Preview" target="_blank" rel="noopener"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-volume-2"/></svg></div><h3>Preview <span class="status st-ok">Open</span></h3><p>200 clips to listen in the browser: numbers, formal, English, Khmer + English, conversation, long reading. Designed voices only, no real person copied.</p></a>
     </div>
   </div>
 </section>
@@ -660,7 +660,7 @@ document.querySelectorAll('#donate .dn-copy').forEach(b=>b.addEventListener('cli
 <footer>
   <div class="wrap">
     <div class="fgrid">
-      <div class="flinks"><b>VoxPocket</b> <a href="https://huggingface.co/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener">Model</a> · <a href="https://huggingface.co/spaces/muyleanging/VoxPocket-TTS-Demo" target="_blank" rel="noopener">Demo</a> · <a href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener">Dataset</a> · <a href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer-Preview" target="_blank" rel="noopener">Preview</a></div>
+      <div class="flinks"><b>VoxPocket</b> <a href="https://huggingface.co/muyleanging/VoxPocket-TTS-Khmer" target="_blank" rel="noopener">Model</a> · <a href="https://huggingface.co/spaces/muyleanging/VoxPocket-TTS-Demo" target="_blank" rel="noopener">Demo</a> · <a href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer-Data-Preview" target="_blank" rel="noopener">Dataset</a> · <a href="https://huggingface.co/datasets/muyleanging/VoxPocket-TTS-Khmer-Preview" target="_blank" rel="noopener">Preview</a></div>
       <div class="flinks"><b>Akkhara</b> <a href="https://muyleanging.github.io/akkhara-web/" target="_blank" rel="noopener">Website</a> · <a href="https://huggingface.co/muyleanging/Akkhara-ByT5-Small-Khmer" target="_blank" rel="noopener">Model</a> · <a href="https://huggingface.co/muyleanging/Akkhara-Mini-Khmer-ONNX" target="_blank" rel="noopener">Phone model</a> · <a href="https://huggingface.co/spaces/muyleanging/Akkhara-Demo" target="_blank" rel="noopener">Demo</a> · <a href="https://github.com/MuyleangIng/akkhara-keyboard" target="_blank" rel="noopener">Keyboard</a> · <a href="https://github.com/MuyleangIng/akkhara-desktop" target="_blank" rel="noopener">Desktop</a></div>
       <div class="flinks"><b>Chakkhu (OCR)</b> <a href="https://muyleanging.github.io/chakkhu-web/" target="_blank" rel="noopener">Website</a> · <a href="https://huggingface.co/muyleanging/Chakkhu-OCR-Khmer" target="_blank" rel="noopener">Model</a> · <a href="https://huggingface.co/spaces/muyleanging/Chakkhu-OCR-Demo" target="_blank" rel="noopener">Demo</a></div>
       <div class="flinks"><b>Sota (ASR)</b> <a href="https://muyleanging.github.io/sota-web/" target="_blank" rel="noopener">Website</a> · <a href="https://huggingface.co/muyleanging/Sota-ASR-Khmer-ONNX" target="_blank" rel="noopener">Model</a> · <a href="https://huggingface.co/spaces/muyleanging/Sota-ASR-Demo" target="_blank" rel="noopener">Demo</a></div>
