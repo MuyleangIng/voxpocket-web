@@ -345,6 +345,7 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
       <a href="#try"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg><span>Try it</span></a>
       <a href="#docs"><svg class="ic" aria-hidden="true"><use href="#i-book-open"/></svg><span>Docs</span></a>
       <a href="#results"><svg class="ic" aria-hidden="true"><use href="#i-gauge"/></svg><span>Results</span></a>
+      <a href="#v6"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg><span>v6.3</span></a>
       <a href="#donate"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><span>Donate</span></a>
     </div>
     <button id="theme" class="iconbtn" title="Light / dark" aria-label="Switch light or dark mode"><svg class="ic" aria-hidden="true"><use href="#i-sun-moon"/></svg></button>
@@ -358,6 +359,7 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
   <a href="#listen"><svg class="ic" aria-hidden="true"><use href="#i-volume-2"/></svg>Listen to the voices</a>
   <a href="#use"><svg class="ic" aria-hidden="true"><use href="#i-wand-sparkles"/></svg>Three ways to use it</a>
   <a href="#results"><svg class="ic" aria-hidden="true"><use href="#i-gauge"/></svg>Results</a>
+  <a href="#v6"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg>New: v6.3<small>license / partner</small></a>
   <a href="#docs"><svg class="ic" aria-hidden="true"><use href="#i-book-open"/></svg>Docs: how it works</a>
   <a href="#dataset"><svg class="ic" aria-hidden="true"><use href="#i-database"/></svg>Dataset</a>
   <a href="#open"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg>Open source &amp; code</a>
@@ -381,7 +383,7 @@ table.res tr.me td{font-weight:700;color:var(--ink);background:color-mix(in srgb
 <header class="hero" id="top">
   <div class="wrap">
     <div>
-      <span class="pill">● Open Khmer text-to-speech · v5</span>
+      <a class="pill" href="#v6">● New: VoxPocket v6.3, voice clip only · beats VoxCPM2 →</a>
       <h1>Khmer voice,<br>in your <span class="km">pocket</span>.</h1>
       <p class="lead">VoxPocket reads <b>Khmer</b> and <b>Khmer mixed with English</b> aloud in a natural voice. <b>Clone a voice</b> from a 4–9 second clip, give it a <b>style</b> (happy, sad, whisper…), or <b>design</b> a new voice from a description.</p>
       <div class="cta">
@@ -538,7 +540,106 @@ sf.write(<span class="s">"voxpocket.wav"</span>, wav, sr)</pre>
   </div>
 </section>
 
-<section id="docs" class="alt">
+<section id="v6" class="alt">
+<style>
+.v6f{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.v6f label{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--ink2)}
+.v6f .full{grid-column:1/-1}
+.v6f input,.v6f select,.v6f textarea{font:inherit;font-weight:400;font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+.v6f textarea{min-height:110px;resize:vertical}
+.v6f input:focus,.v6f select:focus,.v6f textarea:focus{outline:2px solid color-mix(in srgb,var(--blue) 45%,transparent);border-color:var(--blue)}
+.v6f .chk{flex-direction:row;align-items:flex-start;font-weight:400}
+.v6f .chk input{width:auto;margin-top:3px}
+.v6note{font-size:14px;color:var(--muted);margin:10px 0 0}
+.v6note.bad{color:#d14343}
+@media (max-width:640px){.v6f{grid-template-columns:1fr}}
+</style>
+  <div class="wrap">
+    <div class="eyebrow">New · VoxPocket v6.3</div>
+    <h2>v6.3: clone any voice from the sound alone</h2>
+    <p class="sub">VoxPocket v6.3 needs only a voice clip, <b>no transcript</b>. It reads <b>Khmer</b>, <b>English</b> and <b>Khmer mixed with English</b>, in <b>11 styles</b>, and handles <b>long text</b>. v6 is not open source: it is available by <b>license</b> or <b>partnership</b>.</p>
+    <div class="card"><div class="stats">
+      <div class="stat"><b>2.7%</b><span>mean letter error (VoxCPM2: 6.5%)</span></div>
+      <div class="stat"><b>3 / 283</b><span>bad clips (VoxCPM2: 16 / 283)</span></div>
+      <div class="stat"><b>5.0 GB</b><span>peak GPU memory (VoxCPM2: 24.1 GB)</span></div>
+      <div class="stat"><b>0 / 174</b><span>sentences skipped in long text</span></div>
+    </div></div>
+    <div class="card" style="margin-top:18px;overflow:auto">
+      <table class="res">
+        <tr><th>283 held-out clips, voice clip only</th><th>mean error</th><th>English</th><th>Khmer</th><th>Khmer + English</th><th>perfect</th><th>bad (&gt; 10%)</th></tr>
+        <tr class="me"><td>VoxPocket v6.3 (0.89B)</td><td>2.7%</td><td>3.8%</td><td>0.3%</td><td>3.1%</td><td>161</td><td>3</td></tr>
+        <tr><td>VoxPocket v6.2</td><td>4.0%</td><td>6.4%</td><td>0.4%</td><td>3.2%</td><td>154</td><td>6</td></tr>
+        <tr><td>VoxCPM2 (2.38B)</td><td>6.5%</td><td>11.3%</td><td>0.8%</td><td>3.1%</td><td>129</td><td>16</td></tr>
+      </table>
+    </div>
+    <div class="card" style="margin-top:18px;overflow:auto">
+      <table class="res">
+        <tr><th>Resources, 1× RTX 5090</th><th>parameters</th><th>GPU memory after load / peak</th><th>RAM peak</th><th>real-time factor</th></tr>
+        <tr class="me"><td>VoxPocket v6.3</td><td>888M</td><td>2.0 / 5.0 GB</td><td>6.3 GB</td><td>0.28</td></tr>
+        <tr><td>VoxCPM2</td><td>2,384M</td><td>5.0 / 24.1 GB</td><td>10.7 GB</td><td>0.38</td></tr>
+      </table>
+    </div>
+    <div class="grid g2" style="margin-top:18px">
+      <a class="zoom" href="assets/fig/v6_short_by_language.png" data-alt="Short clips by language"><img class="figure" src="assets/fig/v6_short_by_language.png" alt="Letter error by language: v6.3 vs VoxCPM2" loading="lazy"></a>
+      <a class="zoom" href="assets/fig/v6_long_text.png" data-alt="Long text"><img class="figure" src="assets/fig/v6_long_text.png" alt="Long text: error and skipped sentences" loading="lazy"></a>
+      <a class="zoom" href="assets/fig/v6_length_sweep.png" data-alt="Text length in one call"><img class="figure" src="assets/fig/v6_length_sweep.png" alt="Error by text length in one call" loading="lazy"></a>
+      <a class="zoom" href="assets/fig/v6_resources.png" data-alt="Resources"><img class="figure" src="assets/fig/v6_resources.png" alt="GPU memory, RAM and speed" loading="lazy"></a>
+    </div>
+    <p class="meta" style="margin-top:10px">Every clip is listened back by our Khmer speech recognizer <a href="https://muyleanging.github.io/sota-web/" target="_blank" rel="noopener">Sota</a>, which counts letter errors (lower is better). Same voice clips, cfg 2.0, 10 steps, seed 0 for both models. One call is reliable up to about 600 letters; longer text is split into sentences automatically. All models, VoxCPM2 included, break above about 800 letters in one call.</p>
+    <div class="cta" style="margin:18px 0 26px">
+      <a class="btn btn-primary" href="https://huggingface.co/spaces/muyleanging/VoxPocket-v6-Demo" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Try the v6 demo</a>
+      <a class="btn btn-ghost" href="#license"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg>License or partner</a>
+    </div>
+
+    <div class="card" id="license">
+      <h3 style="margin-top:0">Use VoxPocket v6 in your product, or work with me</h3>
+      <p>Commercial license, on-premise or API use, a custom voice, or a research partnership. Tell me what you need and I will reply by email.</p>
+      <form class="v6f" id="v6form" novalidate>
+        <label>Your name<input name="name" required autocomplete="name"></label>
+        <label>Email<input name="email" type="email" required autocomplete="email"></label>
+        <label>Company / organization<input name="org" autocomplete="organization"></label>
+        <label>Country<input name="country" autocomplete="country-name"></label>
+        <label>I am interested in
+          <select name="interest">
+            <option>Buy a commercial license</option>
+            <option>API access (pay per use)</option>
+            <option>Run it on my own servers</option>
+            <option>A custom voice</option>
+            <option>Partnership / cooperation</option>
+            <option>Research or education</option>
+            <option>Other</option>
+          </select></label>
+        <label>Expected use
+          <select name="scale">
+            <option>Testing / not sure yet</option>
+            <option>Under 10 hours of speech a month</option>
+            <option>10–100 hours a month</option>
+            <option>More than 100 hours a month</option>
+          </select></label>
+        <label class="full">What will you use it for?<textarea name="msg" required placeholder="For example: Khmer audiobooks, a call-center voice, news reading, an app for learners…"></textarea></label>
+        <label class="full chk"><input type="checkbox" name="ok" required> I will only clone voices I have permission to use, and never use VoxPocket to impersonate real people.</label>
+        <div class="full"><button class="btn btn-primary" type="submit"><svg class="ic" aria-hidden="true"><use href="#i-external-link"/></svg>Send request</button></div>
+      </form>
+      <p class="v6note" id="v6note">Clicking "Send request" opens your email app with the message filled in. Or write directly to <a href="mailto:muyleanging@gmail.com?subject=VoxPocket%20v6">muyleanging@gmail.com</a>.</p>
+    </div>
+  </div>
+<script>
+(function(){
+  const f=document.getElementById('v6form'), note=document.getElementById('v6note');
+  f.addEventListener('submit',e=>{
+    e.preventDefault();
+    const v=n=>(f.elements[n].value||'').trim();
+    if(!v('name')||!/^\S+@\S+\.\S+$/.test(v('email'))||!v('msg')){note.textContent='Please fill in your name, a valid email and what you will use it for.';note.className='v6note bad';return;}
+    if(!f.elements.ok.checked){note.textContent='Please tick the box about voice permission.';note.className='v6note bad';return;}
+    const body=['Name: '+v('name'),'Email: '+v('email'),'Organization: '+v('org'),'Country: '+v('country'),'Interest: '+v('interest'),'Expected use: '+v('scale'),'','What for:',v('msg'),'','I agree: only voices I have permission to use, no impersonation.'].join('\n');
+    location.href='mailto:muyleanging@gmail.com?subject='+encodeURIComponent('VoxPocket v6: '+v('interest')+' ('+v('name')+')')+'&body='+encodeURIComponent(body);
+    note.textContent='Your email app should open now. If it does not, write to muyleanging@gmail.com.';note.className='v6note';
+  });
+})();
+</script>
+</section>
+
+<section id="docs">
   <div class="wrap">
     <div class="eyebrow">Docs</div>
     <h2>How VoxPocket works</h2>
@@ -553,7 +654,7 @@ sf.write(<span class="s">"voxpocket.wav"</span>, wav, sr)</pre>
   </div>
 </section>
 
-<section id="dataset">
+<section id="dataset" class="alt">
   <div class="wrap">
     <div class="eyebrow">Dataset</div>
     <h2>VoxPocket Khmer TTS dataset</h2>
@@ -565,7 +666,7 @@ sf.write(<span class="s">"voxpocket.wav"</span>, wav, sr)</pre>
   </div>
 </section>
 
-<section id="open" class="alt">
+<section id="open">
   <div class="wrap">
     <div class="eyebrow">Open source</div>
     <h2>Model, demo and code</h2>
@@ -580,7 +681,7 @@ sf.write(<span class="s">"voxpocket.wav"</span>, wav, sr)</pre>
   </div>
 </section>
 
-<section id="cite">
+<section id="cite" class="alt">
   <div class="wrap">
     <div class="eyebrow">Citation</div>
     <h2>Using VoxPocket? Please cite it</h2>
@@ -595,7 +696,7 @@ sf.write(<span class="s">"voxpocket.wav"</span>, wav, sr)</pre>
   </div>
 </section>
 
-<section id="donate" class="alt">
+<section id="donate">
 <style>
 .dn{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch}
 .dn>*{min-width:0}
@@ -725,6 +826,6 @@ document.getElementById('copyCite').onclick=async e=>{
   const b=e.currentTarget, t=b.innerHTML; b.textContent='Copied ✓'; setTimeout(()=>b.innerHTML=t,1800);
 };
 </script>
-<script src="assets/try.js?v=6" defer></script>
+<script src="assets/try.js?v=7" defer></script>
 </body>
 </html>

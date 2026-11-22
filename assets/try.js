@@ -3,7 +3,7 @@
 //  - VoxPocket HD  -> our small API, which uses VoxCPM2 by ModelBest (key stays on the server)
 //  - Sing Khmer    -> the Akkhara demo Space (Latin letters -> Khmer, top 5)
 (() => {
-  const POCKET = "https://ingmuyleang-voxpocket-v4-demo.hf.space/gradio_api";
+  const POCKET = "https://muyleanging-voxpocket-tts-demo.hf.space/gradio_api";
   const AKKHARA = "https://muyleanging-akkhara-demo.hf.space/gradio_api";
   // address of the VoxPocket HD API (empty = HD shows "coming soon"); ?api=http://localhost:8080 for a local test
   let HD = "https://voxpocket-hd-715345118114.asia-southeast1.run.app";
@@ -183,6 +183,7 @@
         const body = { text: t, style: STYLES[st.style][2] };
         if (own) Object.assign(body, { clip: await dataUrl(st.clip.blob), clipText: words, consent: true }); else body.voice = st.voice;
         const r = await fetch(HD + "/api/tts", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+        if (r.status >= 500) throw new Error("VoxPocket HD is resting right now. Please pick the VoxPocket engine above and try again");
         if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error ?? "please try again");
         const ahead = Number(r.headers.get("x-ahead") || 0);
         url = URL.createObjectURL(await r.blob());
